@@ -13,7 +13,11 @@ export default function First(props) {
   };
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
-    document.body.classList.toggle('sb-sidenav-toggled');
+    var width = document.documentElement.clientWidth
+    if(width< 1003){
+      document.body.classList.toggle('sb-sidenav-toggled');
+    }
+  
   };
   const toggleNavbar =()=>{
     document.body.classList.toggle('sb-sidenav-toggled');
