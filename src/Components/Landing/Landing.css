@@ -1,0 +1,47 @@
+
+.navbar {
+  box-shadow: 0 0 10px -1px;
+}
+.logo {
+  width: 60px;
+  height: 60px;
+}
+
+.front-container {
+ align-items: center;
+ 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top:  100px;
+  font-family: "STIX Two Text";
+  width: 90vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.front-container h1 {
+  font-size: 70px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.front-container .sub {
+  margin-top: 50px;
+  width: 70vw;
+  margin-left: auto;
+  margin-right: auto;
+}
+.front-container .sub p {
+  font-size: 30px;
+  text-align: center;
+  opacity: 0.9;
+}
+
+.get-started {
+  margin-top: 60px;
+  margin-left: auto;
+  margin-right: auto;
+
+  text-align: center;
+}
