@@ -176,7 +176,7 @@ export default function MassFollow(props) {
                         }}
                       />
                     </div>
-                    <div className='card-body'>
+                    <div className='card-body container ' style={{overflow: "hidden"}}>
                       <div className='d-flex justify-content-between'>
                         <div className='d-flex align-items-center'>
                           <img
