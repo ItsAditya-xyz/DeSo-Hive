@@ -13,6 +13,7 @@ export default function First(props) {
   };
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
+    document.body.classList.toggle('sb-sidenav-toggled');
   };
   const toggleNavbar =()=>{
     document.body.classList.toggle('sb-sidenav-toggled');
@@ -32,7 +33,7 @@ export default function First(props) {
         </button>
         <div className='ms-auto me-0 me-md-3 my-2 my-md-0'></div>
         <div className='ms-auto ms-md-0 me-3 me-lg-'>
-          <button className='btn btn-primary' onClick={handleLogOut}>
+          <button className='btn btn-primary' onClick={handleLogOut} style={{width: "100px"}}>
             Log Out
           </button>
         </div>

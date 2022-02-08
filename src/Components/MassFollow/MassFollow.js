@@ -13,6 +13,7 @@ export default function MassFollow(props) {
 
   const handleFollowingSearch = async () => {
     setSearchingProfile(true);
+    setPublicKeyToProfileEntryMap(null);
     try {
       const username = document.getElementById("followingSearch").value;
       const getFollowStateless = await props.desoApi.getFollowsStateless(
