@@ -83,7 +83,6 @@ export default function MassFollow(props) {
         );
         followed += 1;
         setTotalFollowed(followed);
-     
       }
     } catch (e) {
       console.log(e);
@@ -120,7 +119,17 @@ export default function MassFollow(props) {
                 }`}
                 type='button'
                 onClick={handleFollowingSearch}>
-                {searchingProfile ? "Searching..." : "Search"}
+                {searchingProfile ? (
+                  <>
+                    <span
+                      className='spinner-border spinner-border-sm'
+                      role='status'
+                      aria-hidden='true'></span>&#160;
+                    <span className=''>Searching...</span>
+                  </>
+                ) : (
+                  "Search"
+                )}
               </button>
             </div>
           </div>
@@ -151,7 +160,13 @@ export default function MassFollow(props) {
                   massFollowUsers();
                 }}>
                 {isFollowing
-                  ? `Following ${listOfKeysToFollow.length} users`
+                  ?  <>
+                    <span
+                      className='spinner-border spinner-border-sm'
+                      role='status'
+                      aria-hidden='true'></span>&#160;
+                    <span className=''>Following {listOfKeysToFollow.length} users</span>
+                  </>
                   : `Follow all ${listOfKeysToFollow.length} users`}
               </button>
             </div>
@@ -176,7 +191,9 @@ export default function MassFollow(props) {
                         }}
                       />
                     </div>
-                    <div className='card-body container ' style={{overflow: "hidden"}}>
+                    <div
+                      className='card-body container '
+                      style={{ overflow: "hidden" }}>
                       <div className='d-flex justify-content-between'>
                         <div className='d-flex align-items-center'>
                           <img

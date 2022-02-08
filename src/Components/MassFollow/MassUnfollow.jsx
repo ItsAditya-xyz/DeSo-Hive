@@ -33,7 +33,7 @@ export default function MassUnfollow(props) {
         const submitTransaction = await props.desoApi.submitTransaction(
           signedTransaction
         );
-        unfollowed += 1
+        unfollowed += 1;
         setTotalUnfollowed(unfollowed);
         //remove key from PublicKeyToProfileEntryMap
 
@@ -88,7 +88,12 @@ export default function MassUnfollow(props) {
       {loadingFollowings ? (
         <div className='container my-5'>
           <div className='d-flex justify-content-center'>
-            <h2> Loading your followings...</h2>
+            <h1> Loading your followings</h1>&#160;&#160;
+            <div
+              className='spinner-border'
+              style={{width: '3rem', height: '3rem'}}
+              role='status'>
+            </div>
           </div>
         </div>
       ) : (
@@ -105,9 +110,20 @@ export default function MassUnfollow(props) {
                 onClick={() => {
                   massUnfollowUsers();
                 }}>
-                {isUnfollowing
-                  ? `Unfollowing ${listOfFollowings.length} users`
-                  : `Unfollow all ${listOfFollowings.length} users`}
+                {isUnfollowing ? (
+                  <>
+                    <span
+                      className='spinner-border spinner-border-sm'
+                      role='status'
+                      aria-hidden='true'></span>
+                    &#160;
+                    <span className=''>
+                      Unfollowing {listOfFollowings.length} users
+                    </span>
+                  </>
+                ) : (
+                  `Unfollow all ${listOfFollowings.length} users`
+                )}
               </button>
             </div>
             {totalUnfollowed > 0 ? (
@@ -137,7 +153,9 @@ export default function MassUnfollow(props) {
                         }}
                       />
                     </div>
-                    <div className='card-body container ' style={{overflow: "hidden"}}>
+                    <div
+                      className='card-body container '
+                      style={{ overflow: "hidden" }}>
                       <div className='d-flex justify-content-between'>
                         <div className='d-flex align-items-center'>
                           <img
