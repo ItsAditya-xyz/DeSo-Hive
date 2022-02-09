@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ComposeBar from "../WritePad/ComposeBar";
 import MassFollow from "../MassFollow/MassFollow";
 import MassUnfollow from "../MassFollow/MassUnfollow";
 import "./first.css";
+import MassSell from "../CreatorCoins/MassSell";
 //import "./sideBarScript.js";
 export default function First(props) {
   const [selectedTab, setSelectedTab] = useState("ThreadTab");
@@ -11,22 +12,31 @@ export default function First(props) {
     localStorage.removeItem("lastLoggedInUser");
     window.location.reload();
   };
+  useEffect(() => {
+    try {
+      const lastTab = localStorage.getItem("selectedTab").toString();
+      setSelectedTab(lastTab);
+    } catch (e) {
+      console.log(e);
+    }
+  }, []);
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
-    var width = document.documentElement.clientWidth
-    if(width< 1003){
-      document.body.classList.toggle('sb-sidenav-toggled');
+    //store tab in local storage
+    localStorage.setItem("selectedTab", tab);
+    var width = document.documentElement.clientWidth;
+    if (width < 1003) {
+      document.body.classList.toggle("sb-sidenav-toggled");
     }
-  
   };
-  const toggleNavbar =()=>{
-    document.body.classList.toggle('sb-sidenav-toggled');
-  }
+  const toggleNavbar = () => {
+    document.body.classList.toggle("sb-sidenav-toggled");
+  };
   return (
     <>
       <nav className='sb-topnav navbar  navbar-expand navbar-dark bg-dark'>
         <a className='navbar-brand ps-3' href='/'>
-          DeSo Utils
+          DeSo Hive
         </a>
         <button
           className='btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0'
@@ -37,7 +47,10 @@ export default function First(props) {
         </button>
         <div className='ms-auto me-0 me-md-3 my-2 my-md-0'></div>
         <div className='ms-auto ms-md-0 me-3 me-lg-'>
-          <button className='btn btn-primary' onClick={handleLogOut} style={{width: "100px"}}>
+          <button
+            className='btn btn-primary'
+            onClick={handleLogOut}
+            style={{ width: "100px" }}>
             Log Out
           </button>
         </div>
@@ -76,7 +89,7 @@ export default function First(props) {
                   Create Thread
                 </button>
 
-                <div className='sb-sidenav-menu-heading'>Mass Actions</div>
+                <div className='sb-sidenav-menu-heading'>Followings</div>
                 <button
                   className={`nav-link btn ${
                     selectedTab === "FollowTab" ? "btn-secondary" : ""
@@ -98,6 +111,17 @@ export default function First(props) {
                   </div>
                   Mass Unfollow
                 </button>
+                <div className='sb-sidenav-menu-heading'>Creator Coins</div>
+                <button
+                  className={`nav-link btn ${
+                    selectedTab === "MassSellTab" ? "btn-secondary" : ""
+                  }`}
+                  onClick={() => handleTabChange("MassSellTab")}>
+                  <div className='sb-nav-link-icon'>
+                    <i className='fas fa-coin'></i>
+                  </div>
+                  Mass Sell
+                </button>
               </div>
             </div>
           </nav>
@@ -107,25 +131,32 @@ export default function First(props) {
             <ComposeBar
               desoIdentity={props.desoIdentity}
               desoApi={props.desoApi}
+              desoPrice={props.desoPrice}
             />
           ) : selectedTab === "FollowTab" ? (
             <MassFollow
               desoIdentity={props.desoIdentity}
               desoApi={props.desoApi}
+              desoPrice={props.desoPrice}
             />
           ) : selectedTab === "UnfollowTab" ? (
             <MassUnfollow
               desoIdentity={props.desoIdentity}
               desoApi={props.desoApi}
+              desoPrice={props.desoPrice}
+            />
+          ) : selectedTab === "MassSellTab" ? (
+            <MassSell
+              desoIdentity={props.desoIdentity}
+              desoApi={props.desoApi}
+              desoPrice={props.desoPrice}
             />
           ) : null}
 
           <footer className='py-4 bg-light mt-auto'>
             <div className='container-fluid px-4'>
               <div className='d-flex align-items-center justify-content-between small'>
-                <div className='text-muted'>
-                  Copyright &copy; ThreadHive 2021
-                </div>
+                <div className='text-muted'>Copyright &copy; DeSoHive 2021</div>
               </div>
             </div>
           </footer>

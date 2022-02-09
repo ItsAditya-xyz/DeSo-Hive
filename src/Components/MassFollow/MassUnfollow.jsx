@@ -58,12 +58,20 @@ export default function MassUnfollow(props) {
       10000,
       lastLoggedInUser
     );
+
     console.log(getFollowStateless);
     setNumOfFollowings(getFollowStateless.NumFollowers);
     const PublicKeyToProfileEntry = getFollowStateless.PublicKeyToProfileEntry;
-    const listOfKeys = Object.keys(PublicKeyToProfileEntry);
+    const sortedPublicKeyToProfileEntry = {};
+      Object.keys(PublicKeyToProfileEntry).sort(function(a, b) {
+        return PublicKeyToProfileEntry[b].CoinPriceDeSoNanos -
+          PublicKeyToProfileEntry[a].CoinPriceDeSoNanos;
+      }).forEach(function(key) {
+        sortedPublicKeyToProfileEntry[key] = PublicKeyToProfileEntry[key];
+      });
+    const listOfKeys = Object.keys(sortedPublicKeyToProfileEntry);
     setListOfFollowings(listOfKeys);
-    setPublicKeyToProfileEntryMap(PublicKeyToProfileEntry);
+    setPublicKeyToProfileEntryMap(sortedPublicKeyToProfileEntry);
     setIsLoadingFollowings(false);
   };
   const handleCheckboxChange = (publicKey, index) => {
@@ -136,7 +144,7 @@ export default function MassUnfollow(props) {
             {Object.keys(PublicKeyToProfileEntryMap).map((publicKey, index) => {
               return (
                 <div className='list-group-item my-1' key={index}>
-                  <div>
+                  <div className="container">
                     <div className='form-check'>
                       <input
                         className='form-check-input'

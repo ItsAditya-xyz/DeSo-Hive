@@ -27,10 +27,23 @@ export default function MassFollow(props) {
       setFollowing(NumOfFollowings);
       const PublicKeyToProfileEntry =
         getFollowStateless.PublicKeyToProfileEntry;
+      //sort PublicKeyToProfileEntry by CoinPriceDeSoNanos
+      const sortedPublicKeyToProfileEntry = {};
+      Object.keys(PublicKeyToProfileEntry)
+        .sort(function (a, b) {
+          return (
+            PublicKeyToProfileEntry[b].CoinPriceDeSoNanos -
+            PublicKeyToProfileEntry[a].CoinPriceDeSoNanos
+          );
+        })
+        .forEach(function (key) {
+          sortedPublicKeyToProfileEntry[key] = PublicKeyToProfileEntry[key];
+        });
+
       //get all publicKey from PublicKeyToProfileEntry
-      const listOfKeys = Object.keys(PublicKeyToProfileEntry);
+      const listOfKeys = Object.keys(sortedPublicKeyToProfileEntry);
       setListOfKeysToFollow(listOfKeys);
-      setPublicKeyToProfileEntryMap(PublicKeyToProfileEntry);
+      setPublicKeyToProfileEntryMap(sortedPublicKeyToProfileEntry);
       //const listOfPublicKeys = getFollowStateless.
     } catch (e) {
       setPublicKeyToProfileEntryMap(null);
@@ -124,7 +137,8 @@ export default function MassFollow(props) {
                     <span
                       className='spinner-border spinner-border-sm'
                       role='status'
-                      aria-hidden='true'></span>&#160;
+                      aria-hidden='true'></span>
+                    &#160;
                     <span className=''>Searching...</span>
                   </>
                 ) : (
@@ -159,15 +173,20 @@ export default function MassFollow(props) {
                 onClick={() => {
                   massFollowUsers();
                 }}>
-                {isFollowing
-                  ?  <>
+                {isFollowing ? (
+                  <>
                     <span
                       className='spinner-border spinner-border-sm'
                       role='status'
-                      aria-hidden='true'></span>&#160;
-                    <span className=''>Following {listOfKeysToFollow.length} users</span>
+                      aria-hidden='true'></span>
+                    &#160;
+                    <span className=''>
+                      Following {listOfKeysToFollow.length} users
+                    </span>
                   </>
-                  : `Follow all ${listOfKeysToFollow.length} users`}
+                ) : (
+                  `Follow all ${listOfKeysToFollow.length} users`
+                )}
               </button>
             </div>
 

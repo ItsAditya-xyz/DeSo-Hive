@@ -11,20 +11,30 @@ function App() {
   const [desoIdentity, setDesoIdentity] = useState(null);
   const [desoApi, setDesoApi] = useState(null);
   const [publicKey, setPublicKey] = useState(null);
+  const [desoPrice, setDeSoPrice] = useState(50);
 
+  const setGetDeSoPrice = async (da) => {
+    try {
+      const exchangeRate = await da.getDeSoPrice();
+      const desoPrice = exchangeRate.USDCentsPerDeSoExchangeRate;
+      console.log(desoPrice);
+      setDeSoPrice(desoPrice);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   useEffect(() => {
     const di = new DeSoIdentity();
     setDesoIdentity(di);
- 
     const da = new DesoApi();
     setDesoApi(da);
+    setGetDeSoPrice(da);
     let user = {};
     if (localStorage.getItem(IdentityUsersKey) === "undefined") {
       user = {};
     } else if (localStorage.getItem(IdentityUsersKey)) {
       user = JSON.parse(localStorage.getItem(IdentityUsersKey) || "{}");
     }
-
     if (user.publicKey) {
       setLoggedIn(true);
       setPublicKey(user.publicKey);
@@ -34,31 +44,37 @@ function App() {
 
   const loginWithDeso = async () => {
     const user = await desoIdentity.loginAsync(4);
-
     setLoggedIn(true);
     //console.log(user)
     setPublicKey(user.publicKey);
     //store user.publicKey as string in localstorage
-
     localStorage.setItem("lastLoggedInUser", `${user.publicKey.toString()}`);
   };
 
   return (
     <>
-     <iframe
-        title="desoidentity"
-        id="identity"
-        frameBorder="0"
-        src="https://identity.deso.org/embed?v=2"
-        style={{height: "100vh", width: "100vw", display: "none", position: "fixed",  zIndex: 1000, left: 0, top: 0}}
-    ></iframe>
-      
+      <iframe
+        title='desoidentity'
+        id='identity'
+        frameBorder='0'
+        src='https://identity.deso.org/embed?v=2'
+        style={{
+          height: "100vh",
+          width: "100vw",
+          display: "none",
+          position: "fixed",
+          zIndex: 1000,
+          left: 0,
+          top: 0,
+        }}></iframe>
+
       {loggedIn ? (
         <First
           loginWithDeso={loginWithDeso}
           desoIdentity={desoIdentity}
           desoApi={desoApi}
-          publicKey = {publicKey}
+          publicKey={publicKey}
+          desoPrice={desoPrice}
         />
       ) : (
         <Landing loginWithDeso={loginWithDeso} />

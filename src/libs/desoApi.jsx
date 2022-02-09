@@ -1,5 +1,5 @@
 import axios from "axios";
-//var axios = require('axios')
+
 
 const DEFAULT_NODE_URL = "https://love4src.com/api";
 //const DEFAULT_NODE_URL = "https://api.desodev.com/api"
@@ -40,15 +40,14 @@ class DesoApi {
     }
   }
 
-  async getFollowsStateless(username, following, numToFetch, publicKey){
-
+  async getFollowsStateless(username, following, numToFetch, publicKey) {
     const path = "/v0/get-follows-stateless";
     const data = {
       Username: username,
       PublicKeyBase58Check: publicKey,
       GetEntriesFollowingUsername: !following,
       LastPublicKeyBase58Check: "",
-      NumToFetch: numToFetch
+      NumToFetch: numToFetch,
     };
     try {
       const result = await this.getClient().post(path, data);
@@ -59,7 +58,7 @@ class DesoApi {
     }
   }
 
-  async createFollowTxn(publicKey, publicKeyToFollow, isFollow){
+  async createFollowTxn(publicKey, publicKeyToFollow, isFollow) {
     if (!publicKey) {
       console.log("publicKey is required");
       return;
@@ -75,7 +74,7 @@ class DesoApi {
       FollowerPublicKeyBase58Check: publicKey,
       FollowedPublicKeyBase58Check: publicKeyToFollow,
       IsUnfollow: !isFollow,
-      MinFeeRateNanosPerKB:2000
+      MinFeeRateNanosPerKB: 2000,
     };
     try {
       const result = await this.getClient().post(path, data);
@@ -189,6 +188,7 @@ class DesoApi {
   }
 
   async getUsersStateless(publicKeyList, skipForLeaderboard) {
+  
     if (!publicKeyList) {
       console.log("publicKeyList is required");
       return;
@@ -198,6 +198,44 @@ class DesoApi {
     const data = {
       PublicKeysBase58Check: publicKeyList,
       SkipForLeaderboard: skipForLeaderboard,
+    };
+    try {
+      const result = await this.getClient().post(path, data);
+      return result.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  
+  }
+  async getDeSoPrice(){
+    const path = this.baseUrl+"/v0/get-exchange-rate";
+    //make a GET REQUEST TO above path
+    try {
+      const result = await axios.get(path);
+      return result.data;
+    }
+    catch(error){
+      console.log(error);
+      return null;
+    }
+    
+  }
+  async sellCoin(publicKey, publicKeyToSell, coinsToSell) {
+    const path = "/v0/buy-or-sell-creator-coin";
+    const data = {
+      UpdaterPublicKeyBase58Check:
+      publicKey,
+      CreatorPublicKeyBase58Check:
+      publicKeyToSell,
+      OperationType: "sell",
+      DeSoToSellNanos: 0,
+      CreatorCoinToSellNanos: coinsToSell,
+      DeSoToAddNanos: 0,
+      MinDeSoExpectedNanos: 0,
+      MinCreatorCoinExpectedNanos: 0,
+      MinFeeRateNanosPerKB: 2000,
+      InTutorial: false,
     };
     try {
       const result = await this.getClient().post(path, data);
