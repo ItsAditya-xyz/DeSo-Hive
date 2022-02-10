@@ -173,7 +173,7 @@ export default function MassSell(props) {
           </div>
           <div className='alert alert-danger' role='alert'>
             <strong>
-              Make sure you un-sellect coins which you don't want to sell!{" "}
+              Make sure you unselect coins which you do not want to sell!{" "}
             </strong>
           </div>
           <table className='table '>
