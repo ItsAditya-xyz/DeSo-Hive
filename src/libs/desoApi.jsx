@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const DEFAULT_NODE_URL = "https://love4src.com/api";
 //const DEFAULT_NODE_URL = "https://api.desodev.com/api"
 let client = null;
@@ -11,6 +10,38 @@ class DesoApi {
     this.baseUrl = DEFAULT_NODE_URL;
   }
 
+  async getAppState() {
+    const path = "/v0/get-app-state";
+    const data = { PublicKeyBase58Check: "" };
+    try {
+      const result = await this.getClient().post(path, data);
+      return result.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
+  async deAuthDerivedKey(publicKey, derivedKey, expirationBlock, accessSignature){
+    const path = "/v0/authorize-derived-key"
+    const data = {
+      OwnerPublicKeyBase58Check: publicKey,
+      DerivedPublicKeyBase58Check: derivedKey,
+      ExpirationBlock: expirationBlock,
+      AccessSignature: accessSignature,
+      DeleteKey: true,
+      DerivedKeySignature: false,
+      MinFeeRateNanosPerKB: 2000
+    };
+    try {
+      const result = await this.getClient().post(path, data);
+      return result.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+
+  }
   async getPostsForPublicKey(
     username,
     publicKey,
@@ -107,7 +138,7 @@ class DesoApi {
 
   async getSinglePost(
     postHash,
-    commentLimit = 20,
+    commentLimit = 1,
     fetchParents = false,
     commentOffset = 0,
     addGlobalFeedBool = false
@@ -135,7 +166,7 @@ class DesoApi {
     }
   }
 
-  async submitPost(publicKey, body, postExtraData, ParentStakeID, imageURL) {
+  async submitPost(publicKey, body, postExtraData, ParentStakeID, imageURL, PostHashHexToModify="", RecloutedPostHashHex="") {
     if (!publicKey) {
       console.log("publicKey is required");
       return;
@@ -149,11 +180,11 @@ class DesoApi {
     const path = "/v0/submit-post";
     const data = {
       UpdaterPublicKeyBase58Check: publicKey,
-      PostHashHexToModify: "",
+      PostHashHexToModify: PostHashHexToModify,
       ParentStakeID: ParentStakeID,
       Title: "",
       BodyObj: { Body: body, ImageURLs: imageURL },
-      RecloutedPostHashHex: "",
+      RecloutedPostHashHex: RecloutedPostHashHex,
       PostExtraData: postExtraData,
       Sub: "",
       IsHidden: false,
@@ -188,7 +219,6 @@ class DesoApi {
   }
 
   async getUsersStateless(publicKeyList, skipForLeaderboard) {
-  
     if (!publicKeyList) {
       console.log("publicKeyList is required");
       return;
@@ -206,28 +236,37 @@ class DesoApi {
       console.log(error);
       return null;
     }
-  
   }
-  async getDeSoPrice(){
-    const path = this.baseUrl+"/v0/get-exchange-rate";
+  async getDeSoPrice() {
+    const path = this.baseUrl + "/v0/get-exchange-rate";
     //make a GET REQUEST TO above path
     try {
       const result = await axios.get(path);
       return result.data;
-    }
-    catch(error){
+    } catch (error) {
       console.log(error);
       return null;
     }
-    
+  }
+
+  async getDerivedKeys(publicKey) {
+    const path = "/v0/get-user-derived-keys";
+    const data = {
+      PublicKeyBase58Check: publicKey,
+    };
+    try {
+      const result = await this.getClient().post(path, data);
+      return result.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   }
   async sellCoin(publicKey, publicKeyToSell, coinsToSell) {
     const path = "/v0/buy-or-sell-creator-coin";
     const data = {
-      UpdaterPublicKeyBase58Check:
-      publicKey,
-      CreatorPublicKeyBase58Check:
-      publicKeyToSell,
+      UpdaterPublicKeyBase58Check: publicKey,
+      CreatorPublicKeyBase58Check: publicKeyToSell,
       OperationType: "sell",
       DeSoToSellNanos: 0,
       CreatorCoinToSellNanos: coinsToSell,

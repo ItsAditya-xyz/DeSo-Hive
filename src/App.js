@@ -12,23 +12,29 @@ function App() {
   const [desoApi, setDesoApi] = useState(null);
   const [publicKey, setPublicKey] = useState(null);
   const [desoPrice, setDeSoPrice] = useState(50);
+  const [appState, setAppState] = useState(null);
 
-  const setGetDeSoPrice = async (da) => {
+  const [isLoading, setIsLoading] = useState(true);
+
+  const initAppState = async (da) => {
     try {
       const exchangeRate = await da.getDeSoPrice();
       const desoPrice = exchangeRate.USDCentsPerDeSoExchangeRate;
-      console.log(desoPrice);
       setDeSoPrice(desoPrice);
+      const getAppState = await da.getAppState();
+      console.log(getAppState);
+      setAppState(getAppState);
     } catch (e) {
       console.log(e);
     }
   };
-  useEffect(() => {
+
+  useEffect(async () => {
+    setIsLoading(true);
     const di = new DeSoIdentity();
     setDesoIdentity(di);
     const da = new DesoApi();
-    setDesoApi(da);
-    setGetDeSoPrice(da);
+    setDesoApi(da)
     let user = {};
     if (localStorage.getItem(IdentityUsersKey) === "undefined") {
       user = {};
@@ -40,6 +46,8 @@ function App() {
       setPublicKey(user.publicKey);
       localStorage.setItem("lastLoggedInUser", `${user.publicKey.toString()}`);
     }
+    await initAppState(da);
+    setIsLoading(false);
   }, []);
 
   const loginWithDeso = async () => {
@@ -68,13 +76,25 @@ function App() {
           top: 0,
         }}></iframe>
 
-      {loggedIn ? (
+      {isLoading ? (
+        <div
+          className='d-flex justify-content-center'
+          style={{ marginTop: "49vh" }}>
+          <div
+            className='spinner-border text-primary'
+            style={{ width: "4rem", height: "4rem" }}
+            role='status'>
+            <span className='sr-only'>Loading...</span>
+          </div>
+        </div>
+      ) : loggedIn ? (
         <First
           loginWithDeso={loginWithDeso}
           desoIdentity={desoIdentity}
           desoApi={desoApi}
           publicKey={publicKey}
           desoPrice={desoPrice}
+          appState={appState}
         />
       ) : (
         <Landing loginWithDeso={loginWithDeso} />

@@ -4,6 +4,8 @@ import MassFollow from "../MassFollow/MassFollow";
 import MassUnfollow from "../MassFollow/MassUnfollow";
 import "./first.css";
 import MassSell from "../CreatorCoins/MassSell";
+import DerivedKey from "../DerivedKeyManager/DerivedKey";
+import EditPost from "../Posts/EditPost";
 //import "./sideBarScript.js";
 export default function First(props) {
   const [selectedTab, setSelectedTab] = useState("ThreadTab");
@@ -77,7 +79,6 @@ export default function First(props) {
             <div className='sb-sidenav-menu'>
               <div className='nav'>
                 <div className='sb-sidenav-menu-heading'></div>
-
                 <button
                   className={`nav-link btn ${
                     selectedTab === "ThreadTab" ? "btn-secondary" : ""
@@ -88,7 +89,6 @@ export default function First(props) {
                   </div>
                   Create Thread
                 </button>
-
                 <div className='sb-sidenav-menu-heading'>Followings</div>
                 <button
                   className={`nav-link btn ${
@@ -122,6 +122,28 @@ export default function First(props) {
                   </div>
                   Mass Sell
                 </button>
+                {/* <div className='sb-sidenav-menu-heading'>Miscellaneous</div>
+                <button
+                  className={`nav-link btn ${
+                    selectedTab === "DerivedKeyTab" ? "btn-secondary" : ""
+                  }`}
+                  onClick={() => handleTabChange("DerivedKeyTab")}>
+                  <div className='sb-nav-link-key'>
+                    <i className='fas fa-coin'></i>
+                  </div>
+                  &#160;Derived Key Manger
+                </button> */}
+                <div className='sb-sidenav-menu-heading'>Posts</div>
+                <button
+                  className={`nav-link btn ${
+                    selectedTab === "editPost" ? "btn-secondary" : ""
+                  }`}
+                  onClick={() => handleTabChange("editPost")}>
+                  <div className='sb-nav-link-key'>
+                    <i className='fas fa-pen'></i>
+                  </div>
+                  &#160;Edit Post
+                </button>
               </div>
             </div>
           </nav>
@@ -150,6 +172,18 @@ export default function First(props) {
               desoIdentity={props.desoIdentity}
               desoApi={props.desoApi}
               desoPrice={props.desoPrice}
+            />
+          ) : selectedTab === "DerivedKeyTab" ? (
+            <DerivedKey
+              desoIdentity={props.desoIdentity}
+              desoApi={props.desoApi}
+              appState={props.appState}
+            />
+          ) : selectedTab === "editPost" ? (
+            <EditPost
+              desoApi={props.desoApi}
+              desoIdentity={props.desoIdentity}
+              appState={props.appState}
             />
           ) : null}
 

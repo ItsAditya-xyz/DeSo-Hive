@@ -112,7 +112,7 @@ export default function MassUnfollow(props) {
             </div>
             <div className='d-flex justify-content-center my-2'>
               <button
-                className={`btn btn-primary btn-lg ${
+                className={`btn  btn-primary btn-lg ${
                   isUnfollowing ? "disabled" : null
                 }`}
                 onClick={() => {

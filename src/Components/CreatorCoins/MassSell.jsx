@@ -77,8 +77,8 @@ export default function MassSell(props) {
       [lastLoggedInUser],
       false
     );
-    const desoExchnage = await props.desoApi.getDeSoPrice();
-    const deso_price = desoExchnage.USDCentsPerDeSoExchangeRate;
+
+    const deso_price = props.desoPrice;
     setDesoPrice(deso_price);
     var listofKeys = [];
     var userList = userResponse.UserList[0].UsersYouHODL;
@@ -149,7 +149,7 @@ export default function MassSell(props) {
           </div>
           <div className='d-flex justify-content-center my-4'>
             <button
-              className={`btn btn-primary btn-lg ${
+              className={`btn btn-primary shadow btn-lg ${
                 isSelling ? "disabled" : null
               }`}
               onClick={() => {

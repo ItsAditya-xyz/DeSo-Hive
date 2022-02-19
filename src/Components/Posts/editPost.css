@@ -1,0 +1,72 @@
+.compose-container {
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.limit-char {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: 12px;
+  font-size: 18px;
+}
+.post-image {
+  width: 70px;
+  height: 70px;
+  font-size: 44px;
+  color: #1c4fd8;
+  background-color: #dbebff;
+  text-align: center;
+  align-items: center;
+  align-self: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+.textContainer {
+  background-color: #f6fafd !important;
+  border-radius: 10px 10px 0px 0px !important;
+  padding: 20px !important;
+  font-size: 20px !important;
+}
+.textContainer:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.extraDataContainer {
+  background-color: #f6fafd !important;
+  border-radius: 0px 0px 10px 10px !important;
+  padding: 20px !important;
+  font-size: 14px !important;
+}
+.extraDataContainer:focus {
+    outline: none !important;
+  box-shadow: none !important;
+}
+.WritePadBoox {
+  margin-top: 25px;
+  border-radius: 10px;
+  border: 1px solid rgb(218, 218, 218);
+}
+.plus-btn {
+  font-size: 25px !important;
+  color: #1c4fd8 !important;
+}
+.btn-normal {
+  outline: none !important;
+}
+.btn-normal::after {
+  outline: none !important;
+}
+
+.btn-image {
+  font-size: 25px !important;
+  color: #4b4b4b !important;
+}
+
+.btn-delete {
+  font-size: 22px !important;
+  color: #ff2525 !important;
+}

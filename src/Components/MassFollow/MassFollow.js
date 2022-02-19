@@ -127,7 +127,7 @@ export default function MassFollow(props) {
             />
             <div className='input-group-append'>
               <button
-                className={`btn btn-primary ${
+                className={`btn  btn-primary  ${
                   searchingProfile || isFollowing ? "disabled" : null
                 }`}
                 type='button'
@@ -167,7 +167,7 @@ export default function MassFollow(props) {
             </div>
             <div className='d-flex justify-content-center my-2'>
               <button
-                className={`btn btn-primary btn-lg ${
+                className={`btn  btn-primary btn-lg ${
                   isFollowing ? "disabled" : null
                 }`}
                 onClick={() => {

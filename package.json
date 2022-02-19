@@ -6,12 +6,18 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "autosize": "^5.0.1",
     "axios": "^0.25.0",
+    "bs58": "^4.0.1",
+    "bs58check": "^2.1.2",
+    "elliptic": "^6.5.4",
     "jquery": "^3.6.0",
     "jsquery": "^1.1.1",
+    "key-encoder": "^2.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "5.0.0",
+    "react-scripts": "4.0.3",
+    "sha256": "^0.2.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
@@ -37,5 +43,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "path-browserify": "^1.0.1"
   }
 }
