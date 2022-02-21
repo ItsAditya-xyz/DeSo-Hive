@@ -686,6 +686,17 @@ progress {
 .col {
   flex: 1 0 0%;
 }
+.wrap .cta .credit p a {
+  text-decoration: none;
+  color: #0099d8;
+}
+
+.wrap .cta .credit p i {
+  color: #e80d2e;
+  -webkit-animation: heartbeat 3s infinite;
+          animation: heartbeat 3s infinite;
+  vertical-align: middle;
+}
 
 .row-cols-auto > * {
   flex: 0 0 auto;

@@ -270,7 +270,7 @@ export default function MassSell(props) {
           <div className='d-flex justify-content-center my-4'>
             <button
               className={`btn btn-primary shadow btn-lg ${
-                isSelling || listOfKeysToSell.length ===0 ? "disabled" : null
+                isSelling || listOfKeysToSell.length === 0 ? "disabled" : null
               }`}
               onClick={() => {
                 sellUsers();
@@ -292,35 +292,32 @@ export default function MassSell(props) {
             </button>
           </div>
 
-          <div className='row'>
-            <div className='col'>
-              <div className='form-check'>
-                <input
-                  className='form-check-input'
-                  type='checkbox'
-                  value=''
-                  id='selectAll'
-                  onChange={handleSelectAll}
-                  checked={isAllSelected}
-                />
-                Select all
-              </div>
+          <div className='d-flex'>
+            <div className='form-check container'>
+              <input
+                className='form-check-input'
+                type='checkbox'
+                value=''
+                id='selectAll'
+                onChange={handleSelectAll}
+                checked={isAllSelected}
+              />
+              Select all
             </div>
-            <div className='col-3'>
-              <div className='container'>
-                <label htmlFor='filters'>Filter: </label>
-                <select
-                  name='coin filter'
-                  id='coinFilter'
-                  onChange={handleFilter}>
-                  <option value='All'>All</option>
-                  <option value='worth < $1000'>{`worth < $1000`}</option>
-                  <option value='worth < $100'>{`worth < $100`}</option>
-                  <option value='worth < $10'>{`worth < $10`}</option>
-                  <option value='worth < $5'>{`worth < $5`}</option>
-                  <option value='worth < $1'>{`worth < $1`}</option>
-                </select>
-              </div>
+
+            <div className='container ml-auto'>
+              <label htmlFor='filters'>Filter: </label>
+              <select
+                name='coin filter'
+                id='coinFilter'
+                onChange={handleFilter}>
+                <option value='All'>All</option>
+                <option value='worth < $1000'>{`worth < $1000`}</option>
+                <option value='worth < $100'>{`worth < $100`}</option>
+                <option value='worth < $10'>{`worth < $10`}</option>
+                <option value='worth < $5'>{`worth < $5`}</option>
+                <option value='worth < $1'>{`worth < $1`}</option>
+              </select>
             </div>
           </div>
 

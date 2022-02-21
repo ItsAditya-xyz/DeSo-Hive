@@ -6,6 +6,7 @@ import "./first.css";
 import MassSell from "../CreatorCoins/MassSell";
 import DerivedKey from "../DerivedKeyManager/DerivedKey";
 import EditPost from "../Posts/EditPost";
+import logo from "../../assets/images/logo.svg";
 //import "./sideBarScript.js";
 export default function Dashboard(props) {
   const [selectedTab, setSelectedTab] = useState("ThreadTab");
@@ -37,11 +38,17 @@ export default function Dashboard(props) {
   return (
     <>
       <nav className='sb-topnav navbar  navbar-expand navbar-dark bg-dark'>
-        <a className='navbar-brand ps-3' href='/'>
-          DeSo Hive
-        </a>
+        <div className='flex'>
+          <a className='navbar-brand' href='/'>
+            <img src={logo} alt='logo' width='36' height='36' />
+          </a>
+          <a className='navbar-brand ' href='/'>
+            DeSo Hive
+          </a>
+        </div>
+
         <button
-          className='btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0'
+          className='btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0 mx-2'
           id='sidebarToggle'
           onClick={toggleNavbar}
           href='/'>
@@ -144,7 +151,6 @@ export default function Dashboard(props) {
                   </div>
                   &#160;Derived Key Manger
                 </button> */}
-               
               </div>
             </div>
           </nav>
@@ -189,10 +195,30 @@ export default function Dashboard(props) {
           ) : null}
 
           <footer className='py-4 bg-light mt-auto'>
-            <div className='container-fluid px-4'>
-              <div className='d-flex align-items-center justify-content-between small'>
-                <div className='text-muted'>Copyright &copy; DeSoHive 2021</div>
-              </div>
+            <div className='container-fluid px-4 wrap'>
+              <section className='cta'>
+                {" "}
+                <div className='credit d-flex'>
+                  <p>
+                    Made with <i className='material-icons'>favorite</i>{" "}
+                    by&#160;
+                    <a
+                      target='_blank'
+                      href='https://diamondapp.com/u/ItsAditya'
+                      target='_blank'>
+                      ItsAditya
+                    </a>
+                  </p>
+                  <p className=' mx-auto'>
+                    Contribute on{" "}
+                    <a
+                      target='_blank'
+                      href='https://github.com/AdityaChaudhary0005/DeSo-Hive'>
+                      GitHub
+                    </a>
+                  </p>
+                </div>
+              </section>
             </div>
           </footer>
         </div>

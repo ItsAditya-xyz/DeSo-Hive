@@ -17,7 +17,7 @@ function getSellingPrice(
     (1 - Math.pow(1 - balanceNanos / coinsInCirculation, 1 / 0.3333333));
   var result = (beforeFees * (100 * 100 - 1)) / (100 * 100);
   var sellingPriceInUSD = (result / 1e9) * desoPrice;
-  return Math.round(sellingPriceInUSD * 10000) / 10000;
+  return Math.round(sellingPriceInUSD * 1000) / 1000;
 }
 function getExpiration(currentBlock, expirationBlock) {
   const leftBlock = expirationBlock - currentBlock;
