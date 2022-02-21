@@ -1,5 +1,5 @@
 import "./App.css";
-import First from "./Components/First/First";
+import Dashboard from "./Components/Dashboard/Dashboard"
 import DeSoIdentity from "./libs/desoIdentity";
 import DesoApi from "./libs/desoApi";
 import Landing from "./Components/Landing/Landing";
@@ -88,7 +88,7 @@ function App() {
           </div>
         </div>
       ) : loggedIn ? (
-        <First
+        <Dashboard
           loginWithDeso={loginWithDeso}
           desoIdentity={desoIdentity}
           desoApi={desoApi}

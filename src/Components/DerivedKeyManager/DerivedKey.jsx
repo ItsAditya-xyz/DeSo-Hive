@@ -1,8 +1,8 @@
-import { map } from "jquery";
+
 import React from "react";
 import { useState, useEffect } from "react";
 import sha256 from "sha256";
-import bs58check from "bs58check";
+
 import { getExpiration, uint64ToBufBigEndian, getPublicKeyfromDeSoPublicKey } from "../utils/desoMath";
 
 export default function DerivedKey(props) {

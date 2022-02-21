@@ -33,11 +33,14 @@ export default function MassUnfollow(props) {
         const submitTransaction = await props.desoApi.submitTransaction(
           signedTransaction
         );
-        unfollowed += 1;
-        setTotalUnfollowed(unfollowed);
-        //remove key from PublicKeyToProfileEntryMap
-
-        console.log(totalUnfollowed);
+        if(submitTransaction){
+          unfollowed += 1;
+          setTotalUnfollowed(unfollowed);
+          //remove key from PublicKeyToProfileEntryMap
+  
+          console.log(totalUnfollowed);
+        }
+       
       }
     } catch (e) {
       console.log(e);
@@ -88,7 +91,7 @@ export default function MassUnfollow(props) {
     }
   };
   useEffect(() => {
-    const test = handleInit();
+     handleInit();
   }, []);
 
   return (

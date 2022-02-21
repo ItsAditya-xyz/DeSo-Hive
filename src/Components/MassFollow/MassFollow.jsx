@@ -94,8 +94,11 @@ export default function MassFollow(props) {
         const submitTransaction = await props.desoApi.submitTransaction(
           signedTransaction
         );
-        followed += 1;
-        setTotalFollowed(followed);
+        if(submitTransaction){
+          followed += 1;
+          setTotalFollowed(followed);
+        }
+      
       }
     } catch (e) {
       console.log(e);

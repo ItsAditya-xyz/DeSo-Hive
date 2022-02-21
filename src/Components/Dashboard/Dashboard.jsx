@@ -7,7 +7,7 @@ import MassSell from "../CreatorCoins/MassSell";
 import DerivedKey from "../DerivedKeyManager/DerivedKey";
 import EditPost from "../Posts/EditPost";
 //import "./sideBarScript.js";
-export default function First(props) {
+export default function Dashboard(props) {
   const [selectedTab, setSelectedTab] = useState("ThreadTab");
   const handleLogOut = () => {
     localStorage.removeItem("identityUsersV2");
@@ -89,6 +89,17 @@ export default function First(props) {
                   </div>
                   Create Thread
                 </button>
+                <div className='sb-sidenav-menu-heading'>Posts</div>
+                <button
+                  className={`nav-link btn ${
+                    selectedTab === "editPost" ? "btn-secondary" : ""
+                  }`}
+                  onClick={() => handleTabChange("editPost")}>
+                  <div className='sb-nav-link-key'>
+                    <i className='fas fa-pen'></i>
+                  </div>
+                  &#160;Edit Post
+                </button>
                 <div className='sb-sidenav-menu-heading'>Followings</div>
                 <button
                   className={`nav-link btn ${
@@ -133,17 +144,7 @@ export default function First(props) {
                   </div>
                   &#160;Derived Key Manger
                 </button> */}
-                <div className='sb-sidenav-menu-heading'>Posts</div>
-                <button
-                  className={`nav-link btn ${
-                    selectedTab === "editPost" ? "btn-secondary" : ""
-                  }`}
-                  onClick={() => handleTabChange("editPost")}>
-                  <div className='sb-nav-link-key'>
-                    <i className='fas fa-pen'></i>
-                  </div>
-                  &#160;Edit Post
-                </button>
+               
               </div>
             </div>
           </nav>

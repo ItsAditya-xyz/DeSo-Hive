@@ -249,7 +249,7 @@ export default function EditPost(props) {
                       <button
                         className='btn fas fa-image btn-image'
                         onClick={() => iamgeUploadRef.current.click()}></button>
-                    </div>
+                    </div> {isUploading? <div>Uploading image..</div>: null}
                   </div>
                   {imageURL ? (
                     <div

@@ -1,6 +1,5 @@
 import bs58check from "bs58check";
-import EC from 'elliptic'
-import KeyEncoder from "key-encoder"
+
 
 function getUSDValue(desoNanos, desoPrice) {
   let usdValue = (Math.round(desoNanos / 1e7) / 100) * desoPrice;

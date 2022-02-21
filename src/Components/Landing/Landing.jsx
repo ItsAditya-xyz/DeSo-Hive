@@ -2,7 +2,7 @@ import React from "react";
 import "./Landing.css";
 import doodles from "../../assets/images/doodles.svg";
 import upDoodles from "../../assets/images/up-doodles.svg";
-
+import logo from "../../assets/images/logo.svg";
 export default function Landing(props) {
   return (
     <>
@@ -39,7 +39,7 @@ export default function Landing(props) {
           filter: "opacity(0.05)",
         }}></div>
 
-      <nav className='navbar navbar-expand-lg navbar-dark bg-dark navbar-top'>
+      {/*<nav className='navbar navbar-expand-lg navbar-dark bg-dark navbar-top'>
         <div className='container-fluid'>
           <button
             className='navbar-toggler'
@@ -69,6 +69,33 @@ export default function Landing(props) {
             </div>
           </div>
         </div>
+      </nav>  */}
+
+      <nav className=' navbar navbar-dark bg-dark navbar-inverse'>
+        <div className='container-fluid'>
+          <div className='d-flex'>
+            <a className='navbar-brand' href='#'>
+              <img
+                src={logo}
+                alt=''
+                width='40'
+                height='40'
+                class='d-inline-block align-text-top'
+              />
+            </a>
+            <a className='navbar-brand align-self-center' href='/'>
+              DeSo Hive
+            </a>
+          </div>
+
+          <div className='nav navbar-nav navbar-right align-self-center '>
+            <button
+              className='btn btn-primary btn-sm'
+              onClick={props.loginWithDeso}>
+              Login with Identity
+            </button>
+          </div>
+        </div>
       </nav>
 
       <div className='container-fluid front-container '>
@@ -80,7 +107,8 @@ export default function Landing(props) {
         <div className='sub'>
           <p>
             <strong>DeSo Hive</strong> is the starter pack for DeSo creators
-            enabling users to write rich content threads, mass follow and unfollow creators and many more!
+            enabling users to write rich content threads, edit posts and manage
+            their wallets and followings
           </p>
 
           <div className='get-started'>
@@ -93,14 +121,6 @@ export default function Landing(props) {
           </div>
           <br />
           <br />
-          <center>
-            {" "}
-            <small className='text-center'>
-              <b>Note</b>: DeSo Hive was made during DeSo Miami hackathon in
-              limited time constraints. Features like post editing and
-              scheduling is in progress and you may encounter some bugs{" "}
-            </small>
-          </center>
         </div>
       </div>
     </>

@@ -194,8 +194,8 @@ class DesoIdentity {
       // console.log(message)
 
       const {
-        data: { id: id, method: method, service: service, payload: payload },
-      } = message;
+        data: {  method: method, service: service, payload: payload },
+      } = message; 
       if (service !== "identity") {
         return;
       }
