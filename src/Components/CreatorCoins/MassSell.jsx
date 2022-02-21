@@ -263,7 +263,7 @@ export default function MassSell(props) {
         <div className='container my-5'>
           <div className='d-flex justify-content-center my-3'>
             <h3>
-              You are holding {Object.keys(filteredHolding).length} creator
+              You are holding {Object.keys(userYouHold).length} creator
               coins worth ${totalWorth}
             </h3>
           </div>
