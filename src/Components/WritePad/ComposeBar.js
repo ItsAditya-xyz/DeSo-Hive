@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import WritePad from "./WritePad";
 import "./WritePad.css";
 import Alert from "../utils/Alert";
+import Deso from "deso-protocol";
 
+import { timeDelay } from "../utils/desoMath";
+const deso = new Deso();
 export default function ComposeBar(props) {
   const [listOfPost, setListOfPost] = useState([
     {
@@ -18,13 +21,12 @@ export default function ComposeBar(props) {
   const [postedHash, setPostedHash] = useState("");
 
   const publishPost = async () => {
+    console.log(listOfPost)
     setIsPosting(true);
     const extraData = {
-      app: "threadHive",
+      app: "DesoHive",
     };
-    var lastLoggedInUser = JSON.parse(
-      localStorage.getItem("identityUsersV2")
-    ).publicKey.toString();
+    var lastLoggedInUser = localStorage.getItem("login_key").toString();
     console.log(lastLoggedInUser + "test");
     let parentStakeId = "";
     for (let i = 0; i < listOfPost.length; i++) {
@@ -32,23 +34,26 @@ export default function ComposeBar(props) {
       let imageURL = listOfPost[i].ImageURL;
       let serial = listOfPost[i].serial;
       try {
-        const submitPost = await props.desoApi.submitPost(
-          lastLoggedInUser,
-          postBody,
-          extraData,
-          parentStakeId,
-          imageURL
-        );
-        const transactionHex = submitPost.TransactionHex;
-        const signedTransaction = await props.desoIdentity.signTxAsync(
-          transactionHex
-        );
-        const submitTransaction = await props.desoApi.submitTransaction(
-          signedTransaction
-        );
-        let postHashHex = submitTransaction.PostEntryResponse.PostHashHex;
+        const submitPost = await deso.posts.submitPost({
+          UpdaterPublicKeyBase58Check: lastLoggedInUser,
+          BodyObj: {
+            Body: postBody,
+            ImageURL: imageURL,
+          },
+
+          PostExtraData: extraData,
+          PostHashHexToModify: "",
+          RepostedPostHashHex: "",
+          ParentStakeID: parentStakeId,
+        });
+        //console.log(submitPost);
+        
+       
+        let postHashHex = submitPost.PostHashHex;
         if (serial === 1) {
           parentStakeId = postHashHex;
+          await timeDelay(2000);
+
         }
       } catch (e) {
         console.log(e);
@@ -69,10 +74,10 @@ export default function ComposeBar(props) {
     setIsPosting(false);
 
     setPostedHash(parentStakeId);
-   // setShowModal(true);
+    // setShowModal(true);
     setHeaderImage("");
     alert("Your thread was posted succesfully!");
-    window.location.reload();
+    //window.location.reload();
   };
 
   const handleImageUpload = async (event) => {
@@ -83,20 +88,19 @@ export default function ComposeBar(props) {
       return;
     }
     setIsUplaoing(true);
-    let JWTToken = await props.desoIdentity.getJWT();
+    let JWTToken = await deso.identity.getJwt(undefined);
+    console.log(JWTToken);
     let serial = event.target.id;
     console.log("before jwt token");
     console.log(JWTToken);
     console.log(serial);
 
-    const publicKeyOfUser = JSON.parse(
-      localStorage.getItem("identityUsersV2")
-    ).publicKey.toString();
+    const publicKeyOfUser = localStorage.getItem("login_key").toString();
     try {
       let uploadImage = await props.desoApi.uploadImage(
         rawImage,
         publicKeyOfUser,
-        JWTToken
+        JWTToken.toString()
       );
       if (uploadImage) {
         let imageURL = uploadImage.ImageURL;

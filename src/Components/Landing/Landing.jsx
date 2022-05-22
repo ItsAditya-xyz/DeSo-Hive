@@ -80,7 +80,7 @@ export default function Landing(props) {
                 alt=''
                 width='40'
                 height='40'
-                class='d-inline-block align-text-top'
+                className='d-inline-block align-text-top'
               />
             </a>
             <a className='navbar-brand align-self-center' href='/'>

@@ -15,10 +15,7 @@ export default function MassUnfollow(props) {
     //looping into list of keys to follow
     let unfollowed = 0;
     try {
-      var lastLoggedInUser = JSON.parse(
-        localStorage.getItem("identityUsersV2")
-      ).publicKey.toString();
-
+      var lastLoggedInUser = localStorage.getItem("login_key").toString();
       for (let i = 0; i < listOfFollowings.length; i++) {
         let key = listOfFollowings[i];
         const followTxn = await props.desoApi.createFollowTxn(
@@ -51,15 +48,13 @@ export default function MassUnfollow(props) {
   };
   //get last logged in user from local storage
   const handleInit = async () => {
-    var lastLoggedInUser = JSON.parse(
-      localStorage.getItem("identityUsersV2")
-    ).publicKey.toString();
+    const publicKeyOfUser = localStorage.getItem("login_key").toString();
 
     const getFollowStateless = await props.desoApi.getFollowsStateless(
       "",
       true,
       10000,
-      lastLoggedInUser
+      publicKeyOfUser
     );
 
     console.log(getFollowStateless);

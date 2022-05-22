@@ -16,9 +16,7 @@ export default function MassSell(props) {
     let sold = 0;
     //looping into list of keys to follow
     try {
-      var lastLoggedInUser = JSON.parse(
-        localStorage.getItem("identityUsersV2")
-      ).publicKey.toString();
+      var lastLoggedInUser = localStorage.getItem("login_key").toString();
 
       for (let i = 0; i < listOfKeysToSell.length; i++) {
         let key = listOfKeysToSell[i];
@@ -189,12 +187,9 @@ export default function MassSell(props) {
     }
   };
   const handleInit = async () => {
-    var lastLoggedInUser = JSON.parse(
-      localStorage.getItem("identityUsersV2")
-    ).publicKey.toString();
-
+    const publicKeyOfUser = localStorage.getItem("login_key").toString();
     const userResponse = await props.desoApi.getUsersStateless(
-      [lastLoggedInUser],
+      [publicKeyOfUser],
       false
     );
 

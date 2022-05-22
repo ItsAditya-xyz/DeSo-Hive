@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import Deso from "deso-protocol";
+const deso = new Deso();
 export default function MassFollow(props) {
   const [PublicKeyToProfileEntryMap, setPublicKeyToProfileEntryMap] =
     useState(null);
@@ -16,13 +17,12 @@ export default function MassFollow(props) {
     setPublicKeyToProfileEntryMap(null);
     try {
       const username = document.getElementById("followingSearch").value;
-      const getFollowStateless = await props.desoApi.getFollowsStateless(
-        username,
-        true,
-        10000,
-        ""
-      );
-      console.log(getFollowStateless);
+      const getFollowStateless = await deso.social.getFollowsStateless({
+        Username: username,
+        numToFetch: 10000,
+        GetEntriesFollowingUsername: false,
+      });
+
       const NumOfFollowings = getFollowStateless.NumFollowers;
       setFollowing(NumOfFollowings);
       const PublicKeyToProfileEntry =
@@ -76,29 +76,24 @@ export default function MassFollow(props) {
     let followed = 0;
     //looping into list of keys to follow
     try {
-      var lastLoggedInUser = JSON.parse(
-        localStorage.getItem("identityUsersV2")
-      ).publicKey.toString();
+      var lastLoggedInUser = localStorage.getItem("login_key").toString();
 
       for (let i = 0; i < listOfKeysToFollow.length; i++) {
         let key = listOfKeysToFollow[i];
-        const followTxn = await props.desoApi.createFollowTxn(
-          lastLoggedInUser,
-          key,
-          true
-        );
-        const transactionHex = followTxn.TransactionHex;
-        const signedTransaction = await props.desoIdentity.signTxAsync(
-          transactionHex
-        );
-        const submitTransaction = await props.desoApi.submitTransaction(
-          signedTransaction
-        );
-        if(submitTransaction){
-          followed += 1;
-          setTotalFollowed(followed);
+        try {
+          const followTxn = await deso.social.createFollowTxnStateless({
+            IsUnfollow: false,
+            FollowedPublicKeyBase58Check: key,
+            FollowerPublicKeyBase58Check: lastLoggedInUser,
+          });
+
+          if (followTxn) {
+            followed += 1;
+            setTotalFollowed(followed);
+          }
+        } catch (e) {
+          console.log(e);
         }
-      
       }
     } catch (e) {
       console.log(e);

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./editPost.css";
+import Deso from "deso-protocol";
+const deso = new Deso();
 export default function EditPost(props) {
   const textAreaRef = useRef(null);
   const extraDataArea = useRef(null);
@@ -18,10 +20,9 @@ export default function EditPost(props) {
   const [originalPostHashHex, setOriginalPostHashHex] = useState(null);
   const [recloutedPostHashHex, setRecloutedPostHashHex] = useState(null);
   useEffect(() => {
-    const publicKeyOfUser = JSON.parse(
-      localStorage.getItem("identityUsersV2")
-    ).publicKey.toString();
-    setLoggedInKey(publicKeyOfUser);
+    var lastLoggedInUser = localStorage.getItem("login_key").toString();
+
+    setLoggedInKey(lastLoggedInUser);
   }, []);
 
   const updatePost = async () => {
@@ -31,25 +32,24 @@ export default function EditPost(props) {
     const iamgeList = [imageURL ? imageURL : ""];
     let parentStakeId = "";
     try {
-      const submitPost = await props.desoApi.submitPost(
-        lastLoggedInUser,
-        post,
-        extraDataJson,
-        parentStakeId,
-        iamgeList,
-        originalPostHashHex,
-        recloutedPostHashHex ? recloutedPostHashHex : ""
-      );
-      const transactionHex = submitPost.TransactionHex;
-      const signedTransaction = await props.desoIdentity.signTxAsync(
-        transactionHex
-      );
-      const submitTransaction = await props.desoApi.submitTransaction(
-        signedTransaction
-      );
+      const submitPost = await deso.posts.submitPost({
+        UpdaterPublicKeyBase58Check: lastLoggedInUser,
+        BodyObj: {
+          Body: post,
+          ImageURL: iamgeList,
+        },
+
+        PostExtraData: extraDataJson,
+        PostHashHexToModify: originalPostHashHex,
+        RepostedPostHashHex:   recloutedPostHashHex ? recloutedPostHashHex : "",
+        ParentStakeID: parentStakeId,
+      });
+
+
+     
       //check status code of submitTransaction
 
-      if (submitTransaction) {
+      if (submitPost) {
         setIsPosting(false);
         alert("Post updated successfully!");
         window.location.reload();
@@ -88,15 +88,13 @@ export default function EditPost(props) {
       return;
     }
     setIsUploading(true);
-    let JWTToken = await props.desoIdentity.getJWT();
+    let JWTToken = await deso.identity.getJwt()
     let serial = event.target.id;
     console.log("before jwt token");
     console.log(JWTToken);
     console.log(serial);
 
-    const publicKeyOfUser = JSON.parse(
-      localStorage.getItem("identityUsersV2")
-    ).publicKey.toString();
+    const publicKeyOfUser = loggedInKey
     try {
       let uploadImage = await props.desoApi.uploadImage(
         rawImage,
@@ -104,8 +102,10 @@ export default function EditPost(props) {
         JWTToken
       );
       if (uploadImage) {
+        console.log("imaged uplaodeddd")
         let imageURL = uploadImage.ImageURL;
         setImageURL(imageURL);
+        setIsUploading(false)
       } else {
         alert("something went wrong while uploading image");
         setIsUploading(false);
@@ -249,7 +249,8 @@ export default function EditPost(props) {
                       <button
                         className='btn fas fa-image btn-image'
                         onClick={() => iamgeUploadRef.current.click()}></button>
-                    </div> {isUploading? <div>Uploading image..</div>: null}
+                    </div>{" "}
+                    {isUploading ? <div>Uploading image..</div> : null}
                   </div>
                   {imageURL ? (
                     <div

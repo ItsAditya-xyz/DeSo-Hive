@@ -7,12 +7,15 @@ import MassSell from "../CreatorCoins/MassSell";
 import DerivedKey from "../DerivedKeyManager/DerivedKey";
 import EditPost from "../Posts/EditPost";
 import logo from "../../assets/images/logo.svg";
+
+import Deso from "deso-protocol";
+const deso = new Deso();
 //import "./sideBarScript.js";
 export default function Dashboard(props) {
   const [selectedTab, setSelectedTab] = useState("ThreadTab");
-  const handleLogOut = () => {
-    localStorage.removeItem("identityUsersV2");
-    localStorage.removeItem("lastLoggedInUser");
+  const handleLogOut = async () => {
+    const publicKey = localStorage.getItem("login_key");
+    const response = await deso.identity.logout(publicKey);
     window.location.reload();
   };
   useEffect(() => {
@@ -205,7 +208,7 @@ export default function Dashboard(props) {
                     <a
                       target='_blank'
                       href='https://diamondapp.com/u/ItsAditya'
-                      target='_blank'>
+                    >
                       ItsAditya
                     </a>
                   </p>

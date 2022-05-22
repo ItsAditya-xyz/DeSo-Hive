@@ -6,6 +6,10 @@ function getUSDValue(desoNanos, desoPrice) {
   return Math.round(usdValue * 100) / 100;
 }
 
+function timeDelay (time) {
+  return new Promise(resolve => setTimeout(resolve, time));
+}
+
 function getSellingPrice(
   desoLockedNanos,
   coinsInCirculation,
@@ -78,4 +82,4 @@ function getPublicKeyfromDeSoPublicKey(publicKey){
     const rawPublicKeyArra = desoPublicKeyDecodedArray.slice(3);
     return rawPublicKeyArra;
 }
-export { getUSDValue, getSellingPrice, getExpiration, uint64ToBufBigEndian, getPublicKeyfromDeSoPublicKey };
+export {getUSDValue,timeDelay, getSellingPrice, getExpiration, uint64ToBufBigEndian, getPublicKeyfromDeSoPublicKey };

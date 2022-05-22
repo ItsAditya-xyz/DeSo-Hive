@@ -1,14 +1,16 @@
 import "./App.css";
-import Dashboard from "./Components/Dashboard/Dashboard"
-import DeSoIdentity from "./libs/desoIdentity";
+import Dashboard from "./Components/Dashboard/Dashboard";
+
 import DesoApi from "./libs/desoApi";
 import Landing from "./Components/Landing/Landing";
 import { useEffect, useState } from "react";
-const IdentityUsersKey = "identityUsersV2";
+import Deso from "deso-protocol";
 
+const IdentityUsersKey = "login_key";
+const deso = new Deso();
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [desoIdentity, setDesoIdentity] = useState(null);
+
   const [desoApi, setDesoApi] = useState(null);
   const [publicKey, setPublicKey] = useState(null);
   const [desoPrice, setDeSoPrice] = useState(50);
@@ -31,51 +33,40 @@ function App() {
 
   useEffect(async () => {
     setIsLoading(true);
-    const di = new DeSoIdentity();
-    setDesoIdentity(di);
-    const da = new DesoApi();
-    setDesoApi(da)
-    let user = {};
-    if (localStorage.getItem(IdentityUsersKey) === "undefined") {
-      user = {};
-    } else if (localStorage.getItem(IdentityUsersKey)) {
-      user = JSON.parse(localStorage.getItem(IdentityUsersKey) || "{}");
+    //check if selectedTab exists in localStorage
+    const selectedTab = localStorage.getItem("selectedTab");
+    if (!selectedTab) {
+      localStorage.setItem("selectedTab", "ThreadTab");
     }
-    if (user.publicKey) {
+
+    const da = new DesoApi();
+    setDesoApi(da);
+    let user = "";
+    if (localStorage.getItem(IdentityUsersKey) === "undefined") {
+      user = ""
+    } else if (localStorage.getItem(IdentityUsersKey)) {
+      user = localStorage.getItem(IdentityUsersKey) || "";
+    }
+    if (user) {
       setLoggedIn(true);
-      setPublicKey(user.publicKey);
-      localStorage.setItem("lastLoggedInUser", `${user.publicKey.toString()}`);
+      setPublicKey(user);
+      
     }
     await initAppState(da);
     setIsLoading(false);
   }, []);
 
   const loginWithDeso = async () => {
-    const user = await desoIdentity.loginAsync(4);
+    const user = await deso.identity.login(4);
+    setPublicKey(user.key)
+    
     setLoggedIn(true);
-    //console.log(user)
-    setPublicKey(user.publicKey);
-    //store user.publicKey as string in localstorage
-    localStorage.setItem("lastLoggedInUser", `${user.publicKey.toString()}`);
+    
+    
   };
 
   return (
     <>
-      <iframe
-        title='desoidentity'
-        id='identity'
-        frameBorder='0'
-        src='https://identity.deso.org/embed?v=2'
-        style={{
-          height: "100vh",
-          width: "100vw",
-          display: "none",
-          position: "fixed",
-          zIndex: 1000,
-          left: 0,
-          top: 0,
-        }}></iframe>
-
       {isLoading ? (
         <div
           className='d-flex justify-content-center'
@@ -89,8 +80,8 @@ function App() {
         </div>
       ) : loggedIn ? (
         <Dashboard
-          loginWithDeso={loginWithDeso}
-          desoIdentity={desoIdentity}
+       
+    
           desoApi={desoApi}
           publicKey={publicKey}
           desoPrice={desoPrice}
