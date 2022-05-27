@@ -1,10 +1,12 @@
 import "./App.css";
 import Dashboard from "./Components/Dashboard/Dashboard";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import DesoApi from "./libs/desoApi";
 import Landing from "./Components/Landing/Landing";
 import { useEffect, useState } from "react";
 import Deso from "deso-protocol";
+import DaoOrderbook from "./Components/DaoOrderbook/DaoOrderbook";
 
 const IdentityUsersKey = "login_key";
 const deso = new Deso();
@@ -43,14 +45,13 @@ function App() {
     setDesoApi(da);
     let user = "";
     if (localStorage.getItem(IdentityUsersKey) === "undefined") {
-      user = ""
+      user = "";
     } else if (localStorage.getItem(IdentityUsersKey)) {
       user = localStorage.getItem(IdentityUsersKey) || "";
     }
     if (user) {
       setLoggedIn(true);
       setPublicKey(user);
-      
     }
     await initAppState(da);
     setIsLoading(false);
@@ -58,38 +59,68 @@ function App() {
 
   const loginWithDeso = async () => {
     const user = await deso.identity.login(4);
-    setPublicKey(user.key)
-    
+    setPublicKey(user.key);
+
     setLoggedIn(true);
-    
-    
   };
 
   return (
     <>
-      {isLoading ? (
-        <div
-          className='d-flex justify-content-center'
-          style={{ marginTop: "49vh" }}>
-          <div
-            className='spinner-border text-primary'
-            style={{ width: "4rem", height: "4rem" }}
-            role='status'>
-            <span className='sr-only'>Loading...</span>
-          </div>
-        </div>
-      ) : loggedIn ? (
-        <Dashboard
-       
-    
-          desoApi={desoApi}
-          publicKey={publicKey}
-          desoPrice={desoPrice}
-          appState={appState}
-        />
-      ) : (
-        <Landing loginWithDeso={loginWithDeso} />
-      )}
+      <Router>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              <>
+                {isLoading ? (
+                  <div
+                    className='d-flex justify-content-center'
+                    style={{ marginTop: "49vh" }}>
+                    <div
+                      className='spinner-border text-primary'
+                      style={{ width: "4rem", height: "4rem" }}
+                      role='status'>
+                      <span className='sr-only'>Loading...</span>
+                    </div>
+                  </div>
+                ) : loggedIn ? (
+                  <Dashboard
+                    desoApi={desoApi}
+                    publicKey={publicKey}
+                    desoPrice={desoPrice}
+                    appState={appState}
+                  />
+                ) : (
+                  <Landing loginWithDeso={loginWithDeso} />
+                )}
+              </>
+            }
+          />
+
+          <Route
+            path='/DAO/:DaoName'
+            element={
+              <>
+                {isLoading ? (
+                  <div
+                    className='d-flex justify-content-center'
+                    style={{ marginTop: "49vh" }}>
+                    <div
+                      className='spinner-border text-primary'
+                      style={{ width: "4rem", height: "4rem" }}
+                      role='status'>
+                      <span className='sr-only'>Loading...</span>
+                    </div>
+                  </div>
+                ) : (
+                  <DaoOrderbook loginWithDeso={loginWithDeso}
+                  desoPrice={desoPrice} />
+                )}
+              </>
+            }
+          />
+        </Routes>
+      </Router>
     </>
   );
 }
