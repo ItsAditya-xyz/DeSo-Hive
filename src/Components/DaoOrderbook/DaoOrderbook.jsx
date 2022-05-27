@@ -121,7 +121,7 @@ export default function DaoOrderbook(props) {
           </div>
         </>
       ) : (
-        <div className='container-fluid front-container '>
+        <div className='container-fluid front-container my-12'>
           {/* Code to show order book exchagne. Buys in green and sells in red*/}
           <div className='row'>
             <div className='col-md-6'>
@@ -192,9 +192,10 @@ export default function DaoOrderbook(props) {
 
               <div
                 style={{
-                  height: "400px",
+                  height: "416px",
                   width: "1100px",
                   overflowY: "scroll",
+                
                 }}>
                 <table className='table'>
                   <thead>
@@ -254,7 +255,9 @@ export default function DaoOrderbook(props) {
             </div>
           </div>
         </div>
+        
       )}
+      <div style={{height: "20px"}}></div>
     </>
   );
 }
