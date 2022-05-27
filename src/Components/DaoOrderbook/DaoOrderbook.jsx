@@ -169,8 +169,8 @@ export default function DaoOrderbook(props) {
                                 Math.round(
                                   (1 /
                                     order.ExchangeRateCoinsToSellPerCoinToBuy) *
-                                    1000
-                                ) / 1000
+                                    10000
+                                ) / 10000
                               } $DESO ($${
                                 Math.round(
                                   (1 /
@@ -235,8 +235,8 @@ export default function DaoOrderbook(props) {
                               {`${
                                 Math.round(
                                   order.ExchangeRateCoinsToSellPerCoinToBuy *
-                                    1000
-                                ) / 1000
+                                    10000
+                                ) / 10000
                               } $DESO ($${
                                 Math.round(
                                   order.ExchangeRateCoinsToSellPerCoinToBuy *
