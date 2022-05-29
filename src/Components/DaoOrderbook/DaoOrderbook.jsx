@@ -121,15 +121,18 @@ export default function DaoOrderbook(props) {
           </div>
         </>
       ) : (
-        <div className='container-fluid front-container my-12'>
+        <div className=" container-lg my-5 d-flex flex-column justify-content-center">
+
+      
+        <div className=' d-flex flex-column justify-content-center'>
           {/* Code to show order book exchagne. Buys in green and sells in red*/}
-          <div className='row'>
-            <div className='col-md-6'>
+          <div className=''>
+            <div className=''>
               <h3>{`Sell Orders for ${daoName} DAO`}</h3>
               <div
                 style={{
                   height: "416px",
-                  width: "1100px",
+              
                   overflowY: "scroll",
                 }}>
                 <table className='table'>
@@ -188,12 +191,12 @@ export default function DaoOrderbook(props) {
                 </table>
                 <div ref={messagesEndRef} />
               </div>
-              <h3>{`Buy Orders for ${daoName} DAO`}</h3>
+              <h3 className="my-5">{`Buy Orders for ${daoName} DAO`}</h3>
 
               <div
                 style={{
                   height: "416px",
-                  width: "1100px",
+                 
                   overflowY: "scroll",
                 
                 }}>
@@ -221,7 +224,7 @@ export default function DaoOrderbook(props) {
                                   {
                                     publicKeyToUsername[
                                       order.TransactorPublicKeyBase58Check
-                                    ]
+                                    ].slice(0, 18)
                                   }
                                   
                                 </p>
@@ -255,7 +258,7 @@ export default function DaoOrderbook(props) {
             </div>
           </div>
         </div>
-        
+        </div>
       )}
       <div style={{height: "20px"}}></div>
     </>
