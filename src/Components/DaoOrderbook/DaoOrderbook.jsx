@@ -14,6 +14,8 @@ export default function DaoOrderbook(props) {
   const params = useParams();
   const daoName = params.DaoName;
 
+  var daoPublicKey = "";
+  var daoOrderResponse = null;
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -24,12 +26,15 @@ export default function DaoOrderbook(props) {
     const getSingleProfile = await deso.user.getSingleProfile({
       Username: daoName,
     });
+
     const publicKeyOfDAO = getSingleProfile.Profile.PublicKeyBase58Check;
+    daoPublicKey = publicKeyOfDAO;
     const payload = {
       DAOCoin1CreatorPublicKeyBase58Check: publicKeyOfDAO,
       DAOCoin2CreatorPublicKeyBase58Check: "DESO",
     };
     const response = await deso.dao.GetDAOCoinLimitOrders(payload);
+    daoOrderResponse = response.Orders;
     //loop through response.orders and find unique keys and store them in listOfKeys
     response.Orders.forEach((order) => {
       if (listOfKeys.indexOf(order.TransactorPublicKeyBase58Check) === -1) {
@@ -78,17 +83,88 @@ export default function DaoOrderbook(props) {
   };
 
   useEffect(async () => {
-    
-    await loadOrderbook()
+    await loadOrderbook();
     scrollToBottom();
   }, []);
 
-  const MINUTE_MS = 60000;
+  const MINUTE_MS = 15000;
 
-  useEffect( () => {
+  useEffect(() => {
     const interval = setInterval(async () => {
-      console.log("Logs every minute");
-      await loadOrderbook()
+      console.log("Logs every 15 seconds");
+      const payload = {
+        DAOCoin1CreatorPublicKeyBase58Check: daoPublicKey,
+        DAOCoin2CreatorPublicKeyBase58Check: "DESO",
+      };
+      const response = await deso.dao.GetDAOCoinLimitOrders(payload);
+      let orderList = response.Orders;
+
+      //check if orderList is different from daoOrderResponse
+      if (orderList.length !== daoOrderResponse.length) {
+        console.log("Order book changed");
+        //if different, update daoOrderResponse and reload orderbook
+        daoOrderResponse = orderList;
+        let listOfKeys = [];
+        let mapOfPublicKeys = {};
+        response.Orders.forEach((order) => {
+          if (listOfKeys.indexOf(order.TransactorPublicKeyBase58Check) === -1) {
+            listOfKeys.push(order.TransactorPublicKeyBase58Check);
+          }
+        });
+
+        const getUserStateLess = await deso.user.getUserStateless({
+          PublicKeysBase58Check: listOfKeys,
+          SkipForLeaderboard: true,
+        });
+        //loop through getUserStateLess and store username for each publicKey in mapOfPublicKeys
+        getUserStateLess.UserList.forEach((user) => {
+          mapOfPublicKeys[user.PublicKeyBase58Check] = user.ProfileEntryResponse
+            ? user.ProfileEntryResponse.Username
+            : user.PublicKeyBase58Check;
+        });
+        console.log(mapOfPublicKeys);
+        let prvePublicKeyToUserName = publicKeyToUsername;
+        //check if there is something in mapOfPublicKeys which is not in prvePublicKeyToUserName
+        for (let key in mapOfPublicKeys) {
+
+          if (!(key in prvePublicKeyToUserName)) {
+            console.log("New user joined");
+            prvePublicKeyToUserName[key] = mapOfPublicKeys[key];
+          }
+        }
+        setPublicKeyToUsername(prvePublicKeyToUserName);
+        console.log(prvePublicKeyToUserName);
+        console.log(publicKeyToUsername);
+
+        //store all sell orders in asencding order in sellOrder variable
+        const sellOrder = response.Orders.filter(
+          (order) => order.OperationType === "ASK"
+        );
+        //make sellOrder in decennary order with respect to ExchangeRateCoinsToSellPerCoinToBuy
+        sellOrder.sort((a, b) => {
+          return (
+            a.ExchangeRateCoinsToSellPerCoinToBuy -
+            b.ExchangeRateCoinsToSellPerCoinToBuy
+          );
+        });
+        //store all buy orders in decending order in buyOrder variable
+        const buyOrder = response.Orders.filter(
+          (order) => order.OperationType === "BID"
+        );
+        //make buyOrder in ascending order with respect to ExchangeRateCoinsToSellPerCoinToBuy
+        buyOrder.sort((a, b) => {
+          return (
+            b.ExchangeRateCoinsToSellPerCoinToBuy -
+            a.ExchangeRateCoinsToSellPerCoinToBuy
+          );
+        });
+        setListOfbuyOrders(buyOrder);
+        setListOfSellOrders(sellOrder);
+
+        setIsLoading(false);
+      } else {
+        console.log("No changes detected...");
+      }
     }, MINUTE_MS);
 
     return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
