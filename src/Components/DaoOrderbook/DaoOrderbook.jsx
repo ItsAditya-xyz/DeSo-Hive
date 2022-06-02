@@ -87,7 +87,7 @@ export default function DaoOrderbook(props) {
     scrollToBottom();
   }, []);
 
-  const MINUTE_MS = 15000;
+  const MINUTE_MS = 25000;
 
   useEffect(() => {
     const interval = setInterval(async () => {
