@@ -18,7 +18,7 @@ export default function DaoOrderbook(props) {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  useEffect(async () => {
+  const loadOrderbook = async () => {
     let listOfKeys = [];
     let mapOfPublicKeys = {};
     const getSingleProfile = await deso.user.getSingleProfile({
@@ -75,9 +75,25 @@ export default function DaoOrderbook(props) {
     setListOfbuyOrders(buyOrder);
     setListOfSellOrders(sellOrder);
     setIsLoading(false);
+  };
 
+  useEffect(async () => {
+    
+    await loadOrderbook()
     scrollToBottom();
   }, []);
+
+  const MINUTE_MS = 60000;
+
+  useEffect( () => {
+    const interval = setInterval(async () => {
+      console.log("Logs every minute");
+      await loadOrderbook()
+    }, MINUTE_MS);
+
+    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
+  }, []);
+
   return (
     <>
       <nav className=' navbar navbar-dark bg-dark navbar-inverse'>
@@ -121,146 +137,140 @@ export default function DaoOrderbook(props) {
           </div>
         </>
       ) : (
-        <div className=" container-lg my-5 d-flex flex-column justify-content-center">
-
-      
-        <div className=' d-flex flex-column justify-content-center'>
-          {/* Code to show order book exchagne. Buys in green and sells in red*/}
-          <div className=''>
+        <div className=' container-lg my-5 d-flex flex-column justify-content-center'>
+          <div className=' d-flex flex-column justify-content-center'>
+            {/* Code to show order book exchagne. Buys in green and sells in red*/}
             <div className=''>
-              <h3>{`Sell Orders for ${daoName} DAO`}</h3>
-              <div
-                style={{
-                  height: "416px",
-              
-                  overflowY: "scroll",
-                }}>
-                <table className='table'>
-                  <thead>
-                    <tr>
-                      <th>Creator</th>
-                      <th>Amount</th>
-                      <th>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {listOfSellOrders.map((order) => {
-                      if (order.OperationType === "ASK") {
-                        return (
-                          <tr key={order.OrderID}>
-                            <td>
-                              <div className='d-flex'>
-                                <img
-                                  className='rounded-circle'
-                                  style={{ width: "30px", height: "30px" }}
-                                  src={`https://diamondapp.com/api/v0/get-single-profile-picture/${order.TransactorPublicKeyBase58Check}?fallback=https://diamondapp.com/assets/img/default_profile_pic.png`}
-                                />
-                                <p className='mx-2'>
-                                  {
-                                    publicKeyToUsername[
-                                      order.TransactorPublicKeyBase58Check
-                                    ]
-                                  }
-                                </p>
-                              </div>
-                            </td>
-                            <td className='table-danger'>
-                              {Math.round(order.QuantityToFill)}
-                            </td>
-                            <td>
-                              {`${
-                                Math.round(
-                                  (1 /
-                                    order.ExchangeRateCoinsToSellPerCoinToBuy) *
-                                    10000
-                                ) / 10000
-                              } $DESO ($${
-                                Math.round(
-                                  (1 /
-                                    order.ExchangeRateCoinsToSellPerCoinToBuy) *
-                                    (props.desoPrice / 100) *
-                                    1000
-                                ) / 1000
-                              })`}
-                            </td>
-                          </tr>
-                        );
-                      }
-                    })}
-                  </tbody>
-                </table>
-                <div ref={messagesEndRef} />
-              </div>
-              <h3 className="my-5">{`Buy Orders for ${daoName} DAO`}</h3>
+              <div className=''>
+                <h3>{`Sell Orders for ${daoName} DAO`}</h3>
+                <div
+                  style={{
+                    height: "416px",
 
-              <div
-                style={{
-                  height: "416px",
-                 
-                  overflowY: "scroll",
-                
-                }}>
-                <table className='table'>
-                  <thead>
-                    <tr>
-                      <th>Creator</th>
-                      <th>Amount</th>
-                      <th>Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {listOfBuyOrders.map((order) => {
-                      if (order.OperationType === "BID") {
-                        return (
-                          <tr key={order.OrderID}>
-                            <td>
-                              <div className='d-flex'>
-                                <img
-                                  className='rounded-circle'
-                                  style={{ width: "30px", height: "30px" }}
-                                  src={`https://diamondapp.com/api/v0/get-single-profile-picture/${order.TransactorPublicKeyBase58Check}?fallback=https://diamondapp.com/assets/img/default_profile_pic.png`}
-                                />
-                                <p className='mx-2'>
-                                  {
-                                    publicKeyToUsername[
+                    overflowY: "scroll",
+                  }}>
+                  <table className='table'>
+                    <thead>
+                      <tr>
+                        <th>Creator</th>
+                        <th>Amount</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listOfSellOrders.map((order) => {
+                        if (order.OperationType === "ASK") {
+                          return (
+                            <tr key={order.OrderID}>
+                              <td>
+                                <div className='d-flex'>
+                                  <img
+                                    className='rounded-circle'
+                                    style={{ width: "30px", height: "30px" }}
+                                    src={`https://diamondapp.com/api/v0/get-single-profile-picture/${order.TransactorPublicKeyBase58Check}?fallback=https://diamondapp.com/assets/img/default_profile_pic.png`}
+                                  />
+                                  <p className='mx-2'>
+                                    {
+                                      publicKeyToUsername[
+                                        order.TransactorPublicKeyBase58Check
+                                      ]
+                                    }
+                                  </p>
+                                </div>
+                              </td>
+                              <td className='table-danger'>
+                                {Math.round(order.QuantityToFill)}
+                              </td>
+                              <td>
+                                {`${
+                                  Math.round(
+                                    (1 /
+                                      order.ExchangeRateCoinsToSellPerCoinToBuy) *
+                                      10000
+                                  ) / 10000
+                                } $DESO ($${
+                                  Math.round(
+                                    (1 /
+                                      order.ExchangeRateCoinsToSellPerCoinToBuy) *
+                                      (props.desoPrice / 100) *
+                                      1000
+                                  ) / 1000
+                                })`}
+                              </td>
+                            </tr>
+                          );
+                        }
+                      })}
+                    </tbody>
+                  </table>
+                  <div ref={messagesEndRef} />
+                </div>
+                <h3 className='my-5'>{`Buy Orders for ${daoName} DAO`}</h3>
+
+                <div
+                  style={{
+                    height: "416px",
+
+                    overflowY: "scroll",
+                  }}>
+                  <table className='table'>
+                    <thead>
+                      <tr>
+                        <th>Creator</th>
+                        <th>Amount</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listOfBuyOrders.map((order) => {
+                        if (order.OperationType === "BID") {
+                          return (
+                            <tr key={order.OrderID}>
+                              <td>
+                                <div className='d-flex'>
+                                  <img
+                                    className='rounded-circle'
+                                    style={{ width: "30px", height: "30px" }}
+                                    src={`https://diamondapp.com/api/v0/get-single-profile-picture/${order.TransactorPublicKeyBase58Check}?fallback=https://diamondapp.com/assets/img/default_profile_pic.png`}
+                                  />
+                                  <p className='mx-2'>
+                                    {publicKeyToUsername[
                                       order.TransactorPublicKeyBase58Check
-                                    ].slice(0, 18)
-                                  }
-                                  
-                                </p>
-                              </div>
-                            </td>
-                            <td className='table-success'>
-                              {Math.round(order.QuantityToFill)}
-                            </td>
-                            <td>
-                              {" "}
-                              {`${
-                                Math.round(
-                                  order.ExchangeRateCoinsToSellPerCoinToBuy *
-                                    10000
-                                ) / 10000
-                              } $DESO ($${
-                                Math.round(
-                                  order.ExchangeRateCoinsToSellPerCoinToBuy *
-                                    (props.desoPrice / 100) *
-                                    1000
-                                ) / 1000
-                              })`}
-                            </td>
-                          </tr>
-                        );
-                      }
-                    })}
-                  </tbody>
-                </table>
+                                    ].slice(0, 18)}
+                                  </p>
+                                </div>
+                              </td>
+                              <td className='table-success'>
+                                {Math.round(order.QuantityToFill)}
+                              </td>
+                              <td>
+                                {" "}
+                                {`${
+                                  Math.round(
+                                    order.ExchangeRateCoinsToSellPerCoinToBuy *
+                                      10000
+                                  ) / 10000
+                                } $DESO ($${
+                                  Math.round(
+                                    order.ExchangeRateCoinsToSellPerCoinToBuy *
+                                      (props.desoPrice / 100) *
+                                      1000
+                                  ) / 1000
+                                })`}
+                              </td>
+                            </tr>
+                          );
+                        }
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
       )}
-      <div style={{height: "20px"}}></div>
+      <div style={{ height: "20px" }}></div>
     </>
   );
 }
