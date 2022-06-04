@@ -14,6 +14,7 @@ export default function DaoOrderbook(props) {
   const params = useParams();
   const daoName = params.DaoName;
 
+  const precision = 100000;
   var daoPublicKey = "";
   var daoOrderResponse = null;
   const scrollToBottom = () => {
@@ -262,15 +263,15 @@ export default function DaoOrderbook(props) {
                                   Math.round(
                                     (1 /
                                       order.ExchangeRateCoinsToSellPerCoinToBuy) *
-                                      10000
-                                  ) / 10000
+                                      precision
+                                  ) / precision
                                 } $DESO ($${
                                   Math.round(
                                     (1 /
                                       order.ExchangeRateCoinsToSellPerCoinToBuy) *
                                       (props.desoPrice / 100) *
-                                      1000
-                                  ) / 1000
+                                      precision
+                                  ) / precision
                                 })`}
                               </td>
                             </tr>
@@ -324,14 +325,14 @@ export default function DaoOrderbook(props) {
                                 {`${
                                   Math.round(
                                     order.ExchangeRateCoinsToSellPerCoinToBuy *
-                                      10000
-                                  ) / 10000
+                                    precision
+                                  ) / precision
                                 } $DESO ($${
                                   Math.round(
                                     order.ExchangeRateCoinsToSellPerCoinToBuy *
                                       (props.desoPrice / 100) *
-                                      1000
-                                  ) / 1000
+                                      precision
+                                  ) / precision
                                 })`}
                               </td>
                             </tr>
