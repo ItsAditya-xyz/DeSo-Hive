@@ -143,7 +143,7 @@ export default function Dashboard(props) {
                   </div>
                   Mass Sell
                 </button>
-                {/* <div className='sb-sidenav-menu-heading'>Miscellaneous</div>
+                 <div className='sb-sidenav-menu-heading'>Miscellaneous</div>
                 <button
                   className={`nav-link btn ${
                     selectedTab === "DerivedKeyTab" ? "btn-secondary" : ""
@@ -153,7 +153,7 @@ export default function Dashboard(props) {
                     <i className='fas fa-coin'></i>
                   </div>
                   &#160;Derived Key Manger
-                </button> */}
+                </button> 
               </div>
             </div>
           </nav>

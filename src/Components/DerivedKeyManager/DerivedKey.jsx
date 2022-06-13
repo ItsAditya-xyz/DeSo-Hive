@@ -1,41 +1,26 @@
-
 import React from "react";
 import { useState, useEffect } from "react";
-import sha256 from "sha256";
+import Deso from "deso-protocol";
+import { getExpiration } from "../utils/desoMath";
 
-import { getExpiration, uint64ToBufBigEndian, getPublicKeyfromDeSoPublicKey } from "../utils/desoMath";
+const deso = new Deso();
 
 export default function DerivedKey(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [derivedKeyMap, setDerivedKeyMap] = useState(null);
-  const revokeDerived = async (publicKey, expirationBlock) => {
-    try {
-      var lastLoggedInUser = JSON.parse(
-        localStorage.getItem("identityUsersV2")
-      ).publicKey.toString();
-        
-      const derivedPublicKey = getPublicKeyfromDeSoPublicKey(publicKey)
-      //const derivedPublicKeyBuffer = bs58check.decode(publicKey)
-      const expirationBlockBuffer = uint64ToBufBigEndian(expirationBlock);
-      console.log(derivedPublicKey);
-      var accessSignature = sha256.x2(derivedPublicKey, expirationBlockBuffer);
-      console.log(accessSignature);
-      const deAuthResponse = await props.desoApi.deAuthDerivedKey(
-        lastLoggedInUser,
-        publicKey,
-        expirationBlock,
-        accessSignature
-      );
-      console.log(deAuthResponse);
-    } catch (e) {
-      console.log(e);
-    }
+  const revokeDerived = async (publicKey) => {
+    var loginKey = localStorage.getItem("login_key");
+    //window.open(`https://identity.deso.org/publicKey=${loginKey}&derivedPublicKey =${publicKey}&deleteKey=true`);
+    const request = {
+      publicKey: loginKey,
+      derivedPublicKey: publicKey,
+      deleteKey: true,
+    };
+    const response = await deso.identity.getUri
   };
   const handleInit = async () => {
     setIsLoading(true);
-    var lastLoggedInUser = JSON.parse(
-      localStorage.getItem("identityUsersV2")
-    ).publicKey.toString();
+    var lastLoggedInUser = localStorage.getItem("login_key");
 
     const derivedKeysResponse = await props.desoApi.getDerivedKeys(
       lastLoggedInUser
@@ -80,6 +65,11 @@ export default function DerivedKey(props) {
                 Derived Keys
               </h4>
             </div>
+            {/* Make a yellow alert in booostrap*/}
+            <div className='alert alert-warning' role='alert'>
+              Warning: Don't revoke keys about whihch you have no idea.
+              Otherwise apps like DaoDao, Cordify, Desofy etc. might not work
+            </div>
             <div className='d-flex justify-content-center'>
               <p>Current Block Height: {props.appState.BlockHeight}</p>
             </div>
@@ -112,13 +102,8 @@ export default function DerivedKey(props) {
                       </td>
                       <td>
                         <button
-                          className='btn btn-danger shadow'
-                          onClick={() =>
-                            revokeDerived(
-                              publicKey,
-                              derivedKeyMap[publicKey].ExpirationBlock
-                            )
-                          }>
+                          className='btn btn-danger shadow hover-shadow'
+                          onClick={() => revokeDerived(publicKey)}>
                           Revoke
                         </button>
                       </td>

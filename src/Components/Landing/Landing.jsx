@@ -91,8 +91,9 @@ export default function Landing(props) {
           <div className='nav navbar-nav navbar-right align-self-center '>
             <button
               className='btn btn-primary btn-sm'
+              
               onClick={props.loginWithDeso}>
-              Login with Identity
+              Sign Up
             </button>
           </div>
         </div>
