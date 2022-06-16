@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { getSellingPrice, getUSDValue } from "../utils/desoMath";
+import Deso from "deso-protocol";
 
+const deso = new Deso();
 export default function MassSell(props) {
   const [isLoadingWallet, setIsLoadingWallet] = useState(true);
   const [userYouHold, setUsersYouHold] = useState(null);
@@ -22,18 +24,19 @@ export default function MassSell(props) {
         let key = listOfKeysToSell[i];
         let coinsToSell = filteredHolding[key].BalanceNanos;
         if (coinsToSell > 0) {
-          const sellTxn = await props.desoApi.sellCoin(
-            lastLoggedInUser,
-            key,
-            coinsToSell
-          );
-          const transactionHex = sellTxn.TransactionHex;
-          const signedTransaction = await props.desoIdentity.signTxAsync(
-            transactionHex
-          );
-          const submitTransaction = await props.desoApi.submitTransaction(
-            signedTransaction
-          );
+          const request = {
+            UpdaterPublicKeyBase58Check: lastLoggedInUser,
+            CreatorPublicKeyBase58Check: key,
+            OperationType: "sell",
+            DeSoToSellNanos: 0,
+            MinDeSoExpectedNanos: 0,
+            CreatorCoinToSellNanos: coinsToSell,
+            MinFeeRateNanosPerKB: 1000,
+          };
+          const response = await deso.wallet.buyOrSellCreatorCoin(request);
+          console.log(response)
+          //wait for 3 seconds
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         }
         sold += 1;
         setCoinSold(sold);
@@ -258,8 +261,8 @@ export default function MassSell(props) {
         <div className='container my-5'>
           <div className='d-flex justify-content-center my-3'>
             <h3>
-              You are holding {Object.keys(userYouHold).length} creator
-              coins worth ${totalWorth}
+              You are holding {Object.keys(userYouHold).length} creator coins
+              worth ${totalWorth}
             </h3>
           </div>
           <div className='d-flex justify-content-center my-4'>

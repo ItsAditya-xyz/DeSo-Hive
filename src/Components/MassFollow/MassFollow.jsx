@@ -86,13 +86,17 @@ export default function MassFollow(props) {
             FollowedPublicKeyBase58Check: key,
             FollowerPublicKeyBase58Check: lastLoggedInUser,
           });
-
+          console.log(followTxn)
           if (followTxn) {
             followed += 1;
             setTotalFollowed(followed);
           }
+          await new Promise((resolve) => setTimeout(resolve, 2000));
         } catch (e) {
           console.log(e);
+          console.log("kuch to hua")
+          // get back to the loop
+          continue;
         }
       }
     } catch (e) {

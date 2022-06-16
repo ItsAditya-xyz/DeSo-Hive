@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./massFollow.css";
-
+import Deso from "deso-protocol";
+const deso = new Deso();
 export default function MassUnfollow(props) {
   const [loadingFollowings, setIsLoadingFollowings] = useState(true);
   const [listOfFollowings, setListOfFollowings] = useState([]);
@@ -23,18 +24,16 @@ export default function MassUnfollow(props) {
           key,
           false
         );
-        const transactionHex = followTxn.TransactionHex;
-        const signedTransaction = await props.desoIdentity.signTxAsync(
-          transactionHex
-        );
-        const submitTransaction = await props.desoApi.submitTransaction(
-          signedTransaction
-        );
-        if(submitTransaction){
+        const unfollowTxn = await deso.social.createFollowTxnStateless({
+          IsUnfollow: true,
+          FollowedPublicKeyBase58Check: key,
+          FollowerPublicKeyBase58Check: lastLoggedInUser,
+        });
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+        if(unfollowTxn){
           unfollowed += 1;
           setTotalUnfollowed(unfollowed);
           //remove key from PublicKeyToProfileEntryMap
-  
           console.log(totalUnfollowed);
         }
        
