@@ -34,7 +34,8 @@ export default function DaoOrderbook(props) {
       DAOCoin1CreatorPublicKeyBase58Check: publicKeyOfDAO,
       DAOCoin2CreatorPublicKeyBase58Check: "DESO",
     };
-    const response = await deso.dao.GetDAOCoinLimitOrders(payload);
+    const response = await deso.dao.getDAOCoinLimitOrders(payload);
+
     daoOrderResponse = response.Orders;
     //loop through response.orders and find unique keys and store them in listOfKeys
     response.Orders.forEach((order) => {
@@ -97,7 +98,7 @@ export default function DaoOrderbook(props) {
         DAOCoin1CreatorPublicKeyBase58Check: daoPublicKey,
         DAOCoin2CreatorPublicKeyBase58Check: "DESO",
       };
-      const response = await deso.dao.GetDAOCoinLimitOrders(payload);
+      const response = await deso.dao.getDAOCoinLimitOrders(payload);
       let orderList = response.Orders;
 
       //check if orderList is different from daoOrderResponse
