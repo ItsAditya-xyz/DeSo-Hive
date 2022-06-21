@@ -76,7 +76,7 @@ export default function MassFollow(props) {
     let followed = 0;
     //looping into list of keys to follow
     try {
-      var lastLoggedInUser = localStorage.getItem("login_key").toString();
+      var lastLoggedInUser = localStorage.getItem("deso_user_key").toString();
 
       for (let i = 0; i < listOfKeysToFollow.length; i++) {
         let key = listOfKeysToFollow[i];

@@ -9,18 +9,24 @@ export default function DerivedKey(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [derivedKeyMap, setDerivedKeyMap] = useState(null);
   const revokeDerived = async (publicKey) => {
-    var loginKey = localStorage.getItem("login_key");
+    var loginKey = localStorage.getItem("deso_user_key");
     //window.open(`https://identity.deso.org/publicKey=${loginKey}&derivedPublicKey =${publicKey}&deleteKey=true`);
     const request = {
+      deleteKey: true,
       publicKey: loginKey,
       derivedPublicKey: publicKey,
-      deleteKey: true,
     };
-    const response = await deso.identity.getUri
+    const response = await deso.identity.derive(request);
+    if (response) {
+      //remove publicKey from derivedKeyMap
+      var newDerivedKeyMap = { ...derivedKeyMap };
+      delete newDerivedKeyMap[publicKey];
+      setDerivedKeyMap(newDerivedKeyMap);
+    }
   };
   const handleInit = async () => {
     setIsLoading(true);
-    var lastLoggedInUser = localStorage.getItem("login_key");
+    var lastLoggedInUser = localStorage.getItem("deso_user_key");
 
     const derivedKeysResponse = await props.desoApi.getDerivedKeys(
       lastLoggedInUser
@@ -34,12 +40,45 @@ export default function DerivedKey(props) {
       const isValid = derivedMap[key].IsValid;
       const expirationBlock = derivedMap[key].ExpirationBlock;
       if (isValid && expirationBlock > currentBlockHeight) {
+        console.log(isValid);
         validKeys[key] = derivedMap[key];
       }
     }
-    console.log(validKeys);
-    setDerivedKeyMap(validKeys);
+
+    //sort valid keys in ascending order of ExpirationBlock
+    const sortedValidKeys = {};
+    Object.keys(validKeys)
+      .sort(function (a, b) {
+        return validKeys[a].ExpirationBlock - validKeys[b].ExpirationBlock;
+      })
+      .forEach(function (key) {
+        sortedValidKeys[key] = validKeys[key];
+      });
+
+    console.log(sortedValidKeys);
+    setDerivedKeyMap(sortedValidKeys);
     setIsLoading(false);
+  };
+
+  const handleViewButton = (spendingLimit) => {
+    var granularLimits = "";
+    const globalDeso = Math.round(spendingLimit.GlobalDESOLimit / 1e8) / 10;
+    const TransactionCountLimitMap = spendingLimit.TransactionCountLimitMap;
+    if (TransactionCountLimitMap) {
+      const transactionCountLimitMap = {};
+      for (var key in TransactionCountLimitMap) {
+        const transactionCountLimit = TransactionCountLimitMap[key];
+        transactionCountLimitMap[key] = transactionCountLimit;
+      }
+
+      for (var key in transactionCountLimitMap) {
+        const transactionCountLimit = transactionCountLimitMap[key];
+        granularLimits += `${key}: ${transactionCountLimit}\n`;
+      }
+    }
+
+    const finalMessage = `Global DESO Limit: ${globalDeso} $DESO \n${granularLimits}`;
+    alert(finalMessage);
   };
   useEffect(async () => {
     const test = await handleInit();
@@ -67,8 +106,8 @@ export default function DerivedKey(props) {
             </div>
             {/* Make a yellow alert in booostrap*/}
             <div className='alert alert-warning' role='alert'>
-              Warning: Don't revoke keys about whihch you have no idea.
-              Otherwise apps like DaoDao, Cordify, Desofy etc. might not work
+              Warning: Don't revoke keys about which you have no idea. Otherwise
+              apps like DaoDao, Cordify, Desofy etc. might not work
             </div>
             <div className='d-flex justify-content-center'>
               <p>Current Block Height: {props.appState.BlockHeight}</p>
@@ -102,9 +141,18 @@ export default function DerivedKey(props) {
                       </td>
                       <td>
                         <button
-                          className='btn btn-danger shadow hover-shadow'
+                          className='btn btn-danger shadow hover-shadow mx-2 my-1'
                           onClick={() => revokeDerived(publicKey)}>
                           Revoke
+                        </button>
+                        <button
+                          className='btn btn-success shadow hover-shadow mx-2'
+                          onClick={() => {
+                            handleViewButton(
+                              derivedKeyMap[publicKey].TransactionSpendingLimit
+                            );
+                          }}>
+                          Details
                         </button>
                       </td>
                     </tr>

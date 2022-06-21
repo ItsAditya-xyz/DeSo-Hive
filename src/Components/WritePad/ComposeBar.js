@@ -26,7 +26,7 @@ export default function ComposeBar(props) {
     const extraData = {
       app: "DesoHive",
     };
-    var lastLoggedInUser = localStorage.getItem("login_key").toString();
+    var lastLoggedInUser = localStorage.getItem("deso_user_key").toString();
     console.log(lastLoggedInUser + "test");
     let parentStakeId = "";
     for (let i = 0; i < listOfPost.length; i++) {
@@ -95,7 +95,7 @@ export default function ComposeBar(props) {
     console.log(JWTToken);
     console.log(serial);
 
-    const publicKeyOfUser = localStorage.getItem("login_key").toString();
+    const publicKeyOfUser = localStorage.getItem("deso_user_key").toString();
     try {
       let uploadImage = await props.desoApi.uploadImage(
         rawImage,

@@ -14,8 +14,10 @@ const deso = new Deso();
 export default function Dashboard(props) {
   const [selectedTab, setSelectedTab] = useState("ThreadTab");
   const handleLogOut = async () => {
-    const publicKey = localStorage.getItem("login_key");
+    const publicKey = localStorage.getItem("deso_user_key");
     const response = await deso.identity.logout(publicKey);
+    //delete localStorage.login_key;
+    localStorage.removeItem("deso_user_key");
     window.location.reload();
   };
   useEffect(() => {

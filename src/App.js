@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import Deso from "deso-protocol";
 import DaoOrderbook from "./Components/DaoOrderbook/DaoOrderbook";
 
-const IdentityUsersKey = "login_key";
+const IdentityUsersKey = "deso_user_key";
 const deso = new Deso();
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);

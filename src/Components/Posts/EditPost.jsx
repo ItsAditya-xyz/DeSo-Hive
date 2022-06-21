@@ -20,7 +20,7 @@ export default function EditPost(props) {
   const [originalPostHashHex, setOriginalPostHashHex] = useState(null);
   const [recloutedPostHashHex, setRecloutedPostHashHex] = useState(null);
   useEffect(() => {
-    var lastLoggedInUser = localStorage.getItem("login_key").toString();
+    var lastLoggedInUser = localStorage.getItem("deso_user_key").toString();
 
     setLoggedInKey(lastLoggedInUser);
   }, []);
