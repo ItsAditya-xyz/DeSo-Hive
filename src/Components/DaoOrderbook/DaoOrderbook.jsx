@@ -128,7 +128,6 @@ export default function DaoOrderbook(props) {
         let prvePublicKeyToUserName = publicKeyToUsername;
         //check if there is something in mapOfPublicKeys which is not in prvePublicKeyToUserName
         for (let key in mapOfPublicKeys) {
-
           if (!(key in prvePublicKeyToUserName)) {
             console.log("New user joined");
             prvePublicKeyToUserName[key] = mapOfPublicKeys[key];
@@ -326,7 +325,7 @@ export default function DaoOrderbook(props) {
                                 {`${
                                   Math.round(
                                     order.ExchangeRateCoinsToSellPerCoinToBuy *
-                                    precision
+                                      precision
                                   ) / precision
                                 } $DESO ($${
                                   Math.round(

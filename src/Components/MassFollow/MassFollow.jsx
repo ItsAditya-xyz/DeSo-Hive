@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Deso from "deso-protocol";
 const deso = new Deso();
+
+// the worst thing about this part rn is that desoJS don't resolve the follow function if it causes 404
 export default function MassFollow(props) {
   const [PublicKeyToProfileEntryMap, setPublicKeyToProfileEntryMap] =
     useState(null);
