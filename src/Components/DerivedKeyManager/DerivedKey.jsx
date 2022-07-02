@@ -10,7 +10,6 @@ export default function DerivedKey(props) {
   const [derivedKeyMap, setDerivedKeyMap] = useState(null);
   const revokeDerived = async (publicKey) => {
     var loginKey = localStorage.getItem("deso_user_key");
-    //window.open(`https://identity.deso.org/publicKey=${loginKey}&derivedPublicKey =${publicKey}&deleteKey=true`);
     const request = {
       deleteKey: true,
       publicKey: loginKey,
