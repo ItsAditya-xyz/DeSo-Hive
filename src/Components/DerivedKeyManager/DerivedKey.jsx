@@ -9,13 +9,11 @@ export default function DerivedKey(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [derivedKeyMap, setDerivedKeyMap] = useState(null);
   const revokeDerived = async (publicKey) => {
-    var loginKey = localStorage.getItem("deso_user_key");
-    const request = {
-      deleteKey: true,
-      publicKey: loginKey,
-      derivedPublicKey: publicKey,
-    };
-    const response = await deso.identity.derive(request);
+    const response = await deso.user.authorizeDerivedKey({
+      DeleteKey: true,
+      DerivedPublicKeyBase58Check: publicKey,
+      MinFeeRateNanosPerKB: 1000,
+    }, { broadcast: true});
     if (response) {
       //remove publicKey from derivedKeyMap
       var newDerivedKeyMap = { ...derivedKeyMap };
