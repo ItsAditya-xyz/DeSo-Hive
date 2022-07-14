@@ -105,8 +105,8 @@ export default function DerivedKey(props) {
             </div>
             {/* Make a yellow alert in booostrap*/}
             <div className='alert alert-warning' role='alert'>
-              Warning: Don't revoke keys about which you have no idea. Otherwise
-              apps like DaoDao, Cordify, Desofy etc. might not work
+              Warning: Don't revoke keys about which you have no idea otherwise
+              apps like desofy, cordify etc. might not work
             </div>
             <div className='d-flex justify-content-center'>
               <p>Current Block Height: {props.appState.BlockHeight}</p>
@@ -151,7 +151,7 @@ export default function DerivedKey(props) {
                               derivedKeyMap[publicKey].TransactionSpendingLimit
                             );
                           }}>
-                          Details
+                          Info
                         </button>
                       </td>
                     </tr>

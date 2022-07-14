@@ -7,6 +7,7 @@ import Landing from "./Components/Landing/Landing";
 import { useEffect, useState } from "react";
 import Deso from "deso-protocol";
 import DaoOrderbook from "./Components/DaoOrderbook/DaoOrderbook";
+import Anon from "./Components/PostAnon/Anon";
 
 const IdentityUsersKey = "deso_user_key";
 const deso = new Deso();
@@ -117,6 +118,28 @@ function App() {
                 )}
               </>
             }
+          />
+
+          <Route
+          path='/Anon'
+          element={
+            <>
+                {isLoading ? (
+                  <div
+                    className='d-flex justify-content-center'
+                    style={{ marginTop: "49vh" }}>
+                    <div
+                      className='spinner-border text-primary'
+                      style={{ width: "4rem", height: "4rem" }}
+                      role='status'>
+                      <span className='sr-only'>Loading...</span>
+                    </div>
+                  </div>
+                ) : (
+                <Anon/>
+                )}
+              </>
+          }
           />
 
           
