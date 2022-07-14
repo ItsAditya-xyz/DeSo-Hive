@@ -190,13 +190,7 @@ export default function DaoOrderbook(props) {
             </a>
           </div>
 
-          <div className='nav navbar-nav navbar-right align-self-center '>
-            <button
-              className='btn btn-primary btn-sm'
-              onClick={props.loginWithDeso}>
-              Login with Identity
-            </button>
-          </div>
+         
         </div>
       </nav>
 

@@ -145,17 +145,29 @@ export default function Dashboard(props) {
                   </div>
                   Mass Sell
                 </button>
-                 <div className='sb-sidenav-menu-heading'>Miscellaneous</div>
+                <div className='sb-sidenav-menu-heading'>Miscellaneous</div>
                 <button
                   className={`nav-link btn ${
                     selectedTab === "DerivedKeyTab" ? "btn-secondary" : ""
                   }`}
                   onClick={() => handleTabChange("DerivedKeyTab")}>
                   <div className='sb-nav-link-key'>
-                    <i className='fas fa-coin'></i>
+                    <i className='fas fa-key'></i>
                   </div>
                   &#160;Derived Key Manger
-                </button> 
+                </button>
+                <a className='nav-link btn' href='/dao/daodao'>
+                  <div className='sb-nav-link-key'>
+                    <i className='fas fa-book'></i>
+                  </div>
+                  &#160;Dao Orderbook
+                </a>
+                <a className='nav-link btn' href='/anon'>
+                  <div className='sb-nav-link-key'>
+                    <i className='fas fa-user'></i>
+                  </div>
+                  &#160;Anonymous Post
+                </a>
               </div>
             </div>
           </nav>
@@ -209,8 +221,7 @@ export default function Dashboard(props) {
                     by&#160;
                     <a
                       target='_blank'
-                      href='https://diamondapp.com/u/ItsAditya'
-                    >
+                      href='https://diamondapp.com/u/ItsAditya'>
                       ItsAditya
                     </a>
                   </p>
