@@ -4,14 +4,54 @@ import { useState, useEffect } from "react";
 import logo from "../../assets/images/logo.svg";
 import axios from "axios";
 import Alert from "../utils/Alert";
+import InfiniteScroll from "react-infinite-scroll-component";
+import DesoApi from "../../libs/desoApi";
+import Loader from "../utils/Loader";
+const deso = new Deso();
+const da = new DesoApi();
 
 export default function Anon(props) {
   const [isPosting, setIsPosting] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [bodyContent, setBodyContent] = useState("");
   const [postHashHex, setPostHashHex] = useState("");
+  const [latestPosts, setLatestPosts] = useState(null);
+  const [lastPostHashHex, setLastPostHashHex] = useState("");
+  const [postLoaded, setPostLoaded] = useState(false);
 
   const [wasPostSuccessful, setWasPostSuccessful] = useState(false);
+  const initLatestPost = async () => {
+    try {
+      const latestMints = await da.getPostsForPublicKey(
+        "AnonVoice",
+        "",
+        lastPostHashHex,
+        20
+      );
+
+      setLatestPosts(latestMints["Posts"]);
+      setLastPostHashHex(latestMints["LastPostHashHex"]);
+      setPostLoaded(true);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const fetchMoreData = async () => {
+    try {
+      const morePost = await da.getPostsForPublicKey(
+        "AnonVoice",
+        "",
+        lastPostHashHex,
+        20
+      );
+
+      setLatestPosts([...latestPosts, ...morePost["Posts"]]);
+      setLastPostHashHex(morePost["LastPostHashHex"]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -54,7 +94,9 @@ export default function Anon(props) {
         setShowModal(true);
       });
   };
-  useEffect(async () => {}, []);
+  useEffect(async () => {
+    await initLatestPost();
+  }, []);
 
   return (
     <>
@@ -140,6 +182,96 @@ export default function Anon(props) {
           </div>
         </div>
       </div>
+
+      <div className='continer d-flex justify-content-center m-5 mx-2'>
+        <h2 className='compose-heading'> Latest Anonymous Posts</h2>
+      </div>
+
+      {postLoaded ? (
+        <div className='container my-2 d-flex justify-content-center'>
+          <InfiniteScroll
+            className='container mx-auto flex pt-4 pb-12 '
+            dataLength={latestPosts.length}
+            next={fetchMoreData}
+            hasMore={true}
+            loader={
+              <div className='d-flex justify-content-center'>
+                <div
+                  className='d-flex justify-content-center'
+                  style={{ marginBottom: "80px" }}>
+                  <div
+                    className='spinner-border text-primary'
+                    style={{ width: "4rem", height: "4rem" }}
+                    role='status'>
+                    <span className='sr-only'>Loading...</span>
+                  </div>
+                </div>
+              </div>
+            }>
+            {latestPosts.map((post, index) => {
+              return (
+                <a
+                  target={"_blank"}
+                  href={`https://diamondapp.com/posts/${post.PostHashHex}`}
+                  className='container d-flex flex-column  mx-2  shadow-sm p-4 mb-3 bg-white '
+                  style={{
+                    borderRadius: "10px",
+                    maxWidth: "600px",
+                    color: "black",
+                    textDecoration: "none",
+                  }}
+                  key={index}>
+                  <div>
+                    <div className='text-lg mb-2 overflow-hidden break-all '>
+                      <p style={{ fontSize: "19px" }}>{post.Body}</p>
+                    </div>
+                  </div>
+
+                  <div className='container d-flex justify-content-around mt-4'>
+                    <div className='d-flex justify-content-center'>
+                      <div className='sb-nav-link-key'>
+                        <i
+                          className='fas fa-heart '
+                          style={{ color: "red" }}></i>
+                      </div>
+                      <div className='mx-1'> &#160;{post.LikeCount}</div>
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                      <div className='sb-nav-link-key'>
+                        <i
+                          className='fas fa-retweet '
+                          style={{ color: "#41B07D" }}></i>
+                      </div>
+                      &#160; {post.RepostCount + post.QuoteRepostCount}
+                    </div>
+                    <div className='d-flex justify-content-center'>
+                      <div className='sb-nav-link-key'>
+                        <i
+                          className='fas fa-comment '
+                          style={{ color: "#B6B6B6" }}></i>
+                      </div>
+                      <div className='mx-1'>{post.CommentCount}</div>
+                    </div>
+                  </div>
+                </a>
+              );
+            })}
+          </InfiniteScroll>
+        </div>
+      ) : (
+        <div className='d-flex justify-content-center'>
+          <div
+            className='d-flex justify-content-center'
+            style={{ marginBottom: "80px" }}>
+            <div
+              className='spinner-border text-primary'
+              style={{ width: "4rem", height: "4rem" }}
+              role='status'>
+              <span className='sr-only'>Loading...</span>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

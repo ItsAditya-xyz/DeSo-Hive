@@ -69,7 +69,7 @@ function App() {
     <>
       <Router>
         <Routes>
-        <Route
+          <Route
             path='/DAO/:DaoName'
             element={
               <>
@@ -85,8 +85,10 @@ function App() {
                     </div>
                   </div>
                 ) : (
-                  <DaoOrderbook loginWithDeso={loginWithDeso}
-                  desoPrice={desoPrice} />
+                  <DaoOrderbook
+                    loginWithDeso={loginWithDeso}
+                    desoPrice={desoPrice}
+                  />
                 )}
               </>
             }
@@ -121,28 +123,13 @@ function App() {
           />
 
           <Route
-          path='/Anon'
-          element={
-            <>
-                {isLoading ? (
-                  <div
-                    className='d-flex justify-content-center'
-                    style={{ marginTop: "49vh" }}>
-                    <div
-                      className='spinner-border text-primary'
-                      style={{ width: "4rem", height: "4rem" }}
-                      role='status'>
-                      <span className='sr-only'>Loading...</span>
-                    </div>
-                  </div>
-                ) : (
-                <Anon/>
-                )}
+            path='/Anon'
+            element={
+              <>
+                <Anon />
               </>
-          }
+            }
           />
-
-          
         </Routes>
       </Router>
     </>
