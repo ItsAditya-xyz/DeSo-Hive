@@ -61,7 +61,7 @@ export default function Anon(props) {
       <nav className=' navbar navbar-dark bg-dark navbar-inverse'>
         <div className='container-fluid'>
           <div className='d-flex'>
-            <a className='navbar-brand' href='#'>
+            <a className='navbar-brand' href='/'>
               <img
                 src={logo}
                 alt=''
