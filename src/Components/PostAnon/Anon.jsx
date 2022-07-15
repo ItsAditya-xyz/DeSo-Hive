@@ -61,7 +61,43 @@ export default function Anon(props) {
     setBodyContent(e.target.value);
     //
   };
+
   const publishPost = async () => {
+    const bannedWords = [
+      "ass",
+      "dick",
+      "boob",
+      "boobs",
+      "fuck",
+      "fuc*",
+      "dickhead",
+      "motherfucker",
+      "fucker",
+      "mofo",
+      "semen",
+      "pussy",
+      "cum",
+      "cuckhold",
+      "fucked",
+      "bitch",
+    ];
+    //check if bodyContent has banned words
+    const lowerCaseText = bodyContent.toLowerCase();
+    const contains = bannedWords.some((element) => {
+      if (lowerCaseText.includes(element)) {
+        return true;
+      }
+      return false;
+    });
+
+    if (contains) {
+      window.alert(
+        "Watch your mouth! You should be anonymous and not asshole."
+      );
+      setIsPosting(false);
+      return
+    }
+
     if (bodyContent.length == 0) {
       alert("Please enter some text to post");
       return;
@@ -80,8 +116,14 @@ export default function Anon(props) {
       return;
     }
 
+    //replace '@' wit '(@)' in bodyContent
+    const replacedText = bodyContent.replace(/@/g, "(@)");
+
+    console.log("posted");
+    console.log(replacedText);
+
     const request = {
-      content: bodyContent,
+      content: replacedText,
     };
     axios({
       method: "post",
