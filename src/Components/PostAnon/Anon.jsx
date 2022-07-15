@@ -67,7 +67,19 @@ export default function Anon(props) {
       return;
     }
     setIsPosting(true);
-    //MAKE A POST RQUEST USING AJAX
+
+    if (
+      new RegExp(
+        "([a-zA-Z0-9]+://)?([a-zA-Z0-9_]+:[a-zA-Z0-9_]+@)?([a-zA-Z0-9.-]+\\.[A-Za-z]{2,4})(:[0-9]+)?(/.*)?"
+      ).test(bodyContent)
+    ) {
+      window.alert(
+        "Please do not include links in your post! Only words are allowed"
+      );
+      setIsPosting(false);
+      return;
+    }
+
     const request = {
       content: bodyContent,
     };
@@ -130,7 +142,7 @@ export default function Anon(props) {
         </h1>
       </div>
       <div className='d-flex justify-content-center'>
-        <div className='container my-5 mx-2 py-4 px-4 compose-container'>
+        <div className='container my-1 mx-2 py-4 px-4 compose-container'>
           <div className='row compose-header'>
             <div className='col'>
               <div className=' post-image'>
