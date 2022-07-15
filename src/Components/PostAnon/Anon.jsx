@@ -37,7 +37,7 @@ export default function Anon(props) {
     }
   };
   var ENGLISH = {};
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @!#$%^&*()_+-=[]{}|;':,./<>?"
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @!#$%^&*()_+-=[]{}|;':,./<>?`~"
     .split("")
     .forEach(function (ch) {
       ENGLISH[ch] = true;
@@ -116,7 +116,7 @@ export default function Anon(props) {
       setIsPosting(false);
       return;
     }
-    const isEnglish = stringIsEnglish(bodyContent);
+    const isEnglish = stringIsEnglish(bodyContent.trim());
     if (!isEnglish) {
       window.alert("Your post contains non-english characters");
       setIsPosting(false);
@@ -147,7 +147,6 @@ export default function Anon(props) {
     console.log("posted");
     console.log(replacedText);
 
-
     const request = {
       content: replacedText,
     };
@@ -172,7 +171,7 @@ export default function Anon(props) {
         console.log(err);
         setIsPosting(false);
         setShowModal(true);
-      }); 
+      });
   };
   useEffect(async () => {
     await initLatestPost();
