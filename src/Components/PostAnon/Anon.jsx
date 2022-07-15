@@ -36,6 +36,23 @@ export default function Anon(props) {
       console.log(e);
     }
   };
+  var ENGLISH = {};
+  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @!#$%^&*()_+-=[]{}|;':,./<>?"
+    .split("")
+    .forEach(function (ch) {
+      ENGLISH[ch] = true;
+    });
+
+  function stringIsEnglish(str) {
+    var index;
+
+    for (index = str.length - 1; index >= 0; --index) {
+      if (!ENGLISH[str.substring(index, index + 1)]) {
+        return false;
+      }
+    }
+    return true;
+  }
 
   const fetchMoreData = async () => {
     try {
@@ -64,6 +81,7 @@ export default function Anon(props) {
 
   const publishPost = async () => {
     const bannedWords = [
+      "die",
       "ass",
       "dick",
       "boob",
@@ -81,6 +99,7 @@ export default function Anon(props) {
       "fucked",
       "bitch",
     ];
+
     //check if bodyContent has banned words
     const lowerCaseText = bodyContent.toLowerCase();
     const contains = bannedWords.some((element) => {
@@ -92,10 +111,16 @@ export default function Anon(props) {
 
     if (contains) {
       window.alert(
-        "Watch your mouth! You should be anonymous and not asshole."
+        "Your post contains a word which is not allowed. Please be humble and nice"
       );
       setIsPosting(false);
-      return
+      return;
+    }
+    const isEnglish = stringIsEnglish(bodyContent);
+    if (!isEnglish) {
+      window.alert("Your post contains non-english characters");
+      setIsPosting(false);
+      return;
     }
 
     if (bodyContent.length == 0) {
@@ -110,7 +135,7 @@ export default function Anon(props) {
       ).test(bodyContent)
     ) {
       window.alert(
-        "Please do not include links in your post! Only words are allowed"
+        "Please do not include links in your post! Only English words are allowed"
       );
       setIsPosting(false);
       return;
@@ -121,6 +146,7 @@ export default function Anon(props) {
 
     console.log("posted");
     console.log(replacedText);
+
 
     const request = {
       content: replacedText,
@@ -146,7 +172,7 @@ export default function Anon(props) {
         console.log(err);
         setIsPosting(false);
         setShowModal(true);
-      });
+      }); 
   };
   useEffect(async () => {
     await initLatestPost();
