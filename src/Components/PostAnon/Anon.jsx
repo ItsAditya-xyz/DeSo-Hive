@@ -133,7 +133,7 @@ export default function Anon(props) {
 
       <div className='continer d-flex justify-content-center m-5 mx-2'>
         <h1 className='text-center'>
-          Post on Deso Anonymously through{" "}
+          Post anything anonymously through{" "}
           <a href='https://diamondapp.com/u/AnonVoice' target={"_blank"}>
             <span className='text-primary text-underline'>
               <u>@AnonVoice</u>
