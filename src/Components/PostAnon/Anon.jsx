@@ -98,6 +98,11 @@ export default function Anon(props) {
       "cuckhold",
       "fucked",
       "bitch",
+      "fu*k", 
+      "butt", 
+      "b00b",
+      "coc*",
+      "co*k",
     ];
 
     //check if bodyContent has banned words
