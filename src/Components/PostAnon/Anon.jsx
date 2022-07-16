@@ -103,6 +103,9 @@ export default function Anon(props) {
       "b00b",
       "coc*",
       "co*k",
+      "fart",
+      "squirt",
+      "creampie"
     ];
 
     //check if bodyContent has banned words
