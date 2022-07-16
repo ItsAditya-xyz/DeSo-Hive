@@ -98,15 +98,15 @@ export default function Anon(props) {
       "cuckhold",
       "fucked",
       "bitch",
-      "fu*k", 
-      "butt", 
+      "fu*k",
+      "butt",
       "b00b",
       "coc*",
       "co*k",
       "fart",
       "squirt",
       "creampie",
-      "shithole"
+      "shithole",
     ];
 
     //check if bodyContent has banned words
@@ -151,7 +151,8 @@ export default function Anon(props) {
     }
 
     //replace '@' wit '(@)' in bodyContent
-    const replacedText = bodyContent.replace(/@/g, "(@)");
+    const noTag = bodyContent.replace(/@/g, "(@)");
+    const replacedText = noTag.replace(/\$/g, "💲");
 
     console.log("posted");
     console.log(replacedText);
