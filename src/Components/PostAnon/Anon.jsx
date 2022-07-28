@@ -18,9 +18,16 @@ export default function Anon(props) {
   const [latestPosts, setLatestPosts] = useState(null);
   const [lastPostHashHex, setLastPostHashHex] = useState("");
   const [postLoaded, setPostLoaded] = useState(false);
-
+  const [ticking, setTicking] = useState(true);
+  const [tickCount, setTickCount] = useState(0);
+  const [captchaUrl, setCaptchaUrl] = useState("https://mintedtweets.cordify.app/get-captcha-image")
   const [wasPostSuccessful, setWasPostSuccessful] = useState(false);
+
+  const [remark, setRemark] = useState("");
+  //const [captcha, setCaptcha] = useState(null);
+  async function getCaptcha() {}
   const initLatestPost = async () => {
+    await getCaptcha();
     try {
       const latestMints = await da.getPostsForPublicKey(
         "AnonVoice",
@@ -36,6 +43,18 @@ export default function Anon(props) {
       console.log(e);
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(
+      () => ticking && setTickCount(tickCount + 1),
+      60 * 1e3
+    );
+    console.log("ticking...");
+
+    setCaptchaUrl(captchaUrl === "https://mintedtweets.cordify.app/get-captcha-image2"? "https://mintedtweets.cordify.app/get-captcha-image": "https://mintedtweets.cordify.app/get-captcha-image2")
+    return () => clearTimeout(timer);
+  }, [tickCount, ticking]);
+
   var ENGLISH = {};
   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @!#$%^&*()_+-=[]{}|;':,./<>?`~"
     .split("")
@@ -149,16 +168,21 @@ export default function Anon(props) {
       setIsPosting(false);
       return;
     }
+    const captchaTextInput = document.getElementById("captchaInput").value;
+    if(captchaTextInput === ""){
+      window.alert("Please input captcha Text")
+      setIsPosting(false)
+      return
+    }
 
-    //replace '@' wit '(@)' in bodyContent
-    const noTag = bodyContent.replace(/@/g, "(@)");
-    const replacedText = noTag.replace(/\$/g, "💲");
+    const replacedText = bodyContent.replace(/\$/g, "💲");
 
     console.log("posted");
     console.log(replacedText);
 
     const request = {
       content: replacedText,
+      captchaText: captchaTextInput
     };
     axios({
       method: "post",
@@ -167,7 +191,9 @@ export default function Anon(props) {
     })
       .then((res) => {
         const response = res.data;
+        setRemark(response.message);
         if (response.status) {
+          
           setBodyContent("");
           setWasPostSuccessful(true);
           setPostHashHex(response.data.PostEntryResponse.PostHashHex);
@@ -234,14 +260,6 @@ export default function Anon(props) {
             </div>
           </div>
 
-          <button
-            className={`btn btn-primary shadow-sm ${
-              isPosting ? "disabled" : " "
-            }`}
-            style={{ width: "90px" }}
-            onClick={publishPost}>
-            {isPosting ? <div className='loading'>Posting...</div> : "Post"}
-          </button>
           {showModal ? (
             <Alert
               type={wasPostSuccessful ? "success" : "danger"}
@@ -268,6 +286,37 @@ export default function Anon(props) {
                 border: "none",
                 borderBottom: "1px solid rgb(218, 218, 218)",
               }}></textarea>
+          </div>
+          <div className='my-3'>
+           
+            <img
+              src={captchaUrl}
+              alt='captcha'
+              className='captcha-image w-25 h-25'
+            />
+          </div>
+          <div className='d-flex'>
+            <div className='px-3'>
+              <input
+                type='text'
+                id='captchaInput'
+                className='form-control'
+                placeholder='Captcha'
+              />
+            </div>
+
+            <button
+              className={`btn btn-primary shadow-sm ${
+                isPosting ? "disabled" : " "
+              }`}
+              style={{ width: "90px" }}
+              onClick={publishPost}>
+              {isPosting ? <div className='loading'>Posting...</div> : "Post"}
+            </button>
+          </div>
+
+          <div className="my-1">
+            {remark}
           </div>
         </div>
       </div>
