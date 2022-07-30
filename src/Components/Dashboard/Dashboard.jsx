@@ -9,6 +9,7 @@ import EditPost from "../Posts/EditPost";
 import logo from "../../assets/images/logo.svg";
 
 import Deso from "deso-protocol";
+import DiamondShower from "../DiamondShower/DiamondShower";
 const deso = new Deso();
 //import "./sideBarScript.js";
 export default function Dashboard(props) {
@@ -148,6 +149,17 @@ export default function Dashboard(props) {
                 <div className='sb-sidenav-menu-heading'>Miscellaneous</div>
                 <button
                   className={`nav-link btn ${
+                    selectedTab === "DiamondShowerTab" ? "btn-secondary" : ""
+                  }`}
+                  onClick={() => handleTabChange("DiamondShowerTab")}>
+                  <div className='sb-nav-link-key'>
+                    <i className='fas fa-gem'></i>
+                  </div>
+                  &#160;Diamond Shower
+                </button>
+
+                <button
+                  className={`nav-link btn ${
                     selectedTab === "DerivedKeyTab" ? "btn-secondary" : ""
                   }`}
                   onClick={() => handleTabChange("DerivedKeyTab")}>
@@ -203,7 +215,14 @@ export default function Dashboard(props) {
               desoApi={props.desoApi}
               appState={props.appState}
             />
-          ) : selectedTab === "editPost" ? (
+          ): selectedTab === "DiamondShowerTab" ? (
+           <DiamondShower
+              desoIdentity={props.desoIdentity}
+              desoApi={props.desoApi}
+              desoPrice={props.desoPrice}
+            />
+
+          ): selectedTab === "editPost" ? (
             <EditPost
               desoApi={props.desoApi}
               desoIdentity={props.desoIdentity}

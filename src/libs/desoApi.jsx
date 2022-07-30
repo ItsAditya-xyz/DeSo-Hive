@@ -46,7 +46,8 @@ class DesoApi {
     username,
     publicKey,
     lastPostHashHex,
-    numToFetch = 10
+    numToFetch = 10,
+    readerPublicKey = ""
   ) {
     if (!username && !publicKey) {
       console.log("username or publicKey is required");
@@ -57,7 +58,7 @@ class DesoApi {
     const data = {
       PublicKeyBase58Check: publicKey,
       Username: username,
-      ReaderPublicKeyBase58Check: "",
+      ReaderPublicKeyBase58Check: readerPublicKey,
       LastPostHashHex: lastPostHashHex,
       NumToFetch: numToFetch,
       MediaRequired: false,
