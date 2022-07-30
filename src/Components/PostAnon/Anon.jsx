@@ -292,7 +292,9 @@ export default function Anon(props) {
             <img
               src={captchaUrl}
               alt='captcha'
-              className='captcha-image w-25 h-25'
+              className='captcha-image'
+              style={{width: "250px"}}
+              
             />
           </div>
           <div className='d-flex'>
