@@ -16,8 +16,13 @@ export default function DiamondShower(props) {
   const [userHasPosts, setUserHasPosts] = useState(false);
   const [postsToDiamondCount, setPostsToDiamondCount] = useState(50);
   const [userPublicKey, setUserPublicKey] = useState("");
-
+  const [totalCost, setTotalCost] = useState(0);
   const [postsDiamonded, setPostsDiamonded] = useState(0);
+  const diamondLevelMap = {
+    1: 0.00005,
+    2: 0.0005,
+    3: 0.005,
+  };
 
   useEffect(() => {
     var lastLoggedInUser = localStorage.getItem("deso_user_key").toString();
@@ -35,10 +40,10 @@ export default function DiamondShower(props) {
         50,
         userPublicKey
       );
-      if(!userPosts){
+      if (!userPosts) {
         alert("User not found");
         setSearchingProfile(false);
-        return
+        return;
       }
       if (userPosts["Posts"].length > 0) {
         setUserHasPosts(true);
@@ -47,6 +52,8 @@ export default function DiamondShower(props) {
       setLastPostHashHex(userPosts["LastPostHashHex"]);
       setSearchingProfile(false);
       setPostsLoaded(true);
+
+      setTotalCost(postsToDiamondCount * diamondLevelMap[diamondLevel]);
     } catch (e) {
       console.log(e);
       setSearchingProfile(false);
@@ -71,6 +78,7 @@ export default function DiamondShower(props) {
 
   const handlePostsToDiamondCountChange = (e) => {
     setPostsToDiamondCount(e.target.value);
+    setTotalCost(parseInt(e.target.value) * diamondLevelMap[diamondLevel]);
   };
   const handleDiamondShower = async () => {
     setIsDiamonding(true);
@@ -105,23 +113,24 @@ export default function DiamondShower(props) {
       }
     }
     setIsDiamonding(false);
-    if(totalPostDiamonded <10){
-        window.alert(`Diamonds sent to ${totalPostDiamonded} posts. Mostly new posts are diamonded by you. Scroll down the whole page first and then click diamond shower button to diamond older posts.`);
+    if (totalPostDiamonded < 10) {
+      window.alert(
+        `Diamonds sent to ${totalPostDiamonded} posts. Mostly new posts are diamonded by you. Scroll down the whole page first and then click diamond shower button to diamond older posts.`
+      );
+    } else {
+      window.alert(`Diamonds sent to ${totalPostDiamonded} posts`);
     }
-    else{
-        window.alert(`Diamonds sent to ${totalPostDiamonded} posts`);
-    }
-  
   };
   const handleFilter = () => {
     if (isDimaonding) return;
     const filterValue = document.getElementById("diamondLevelFilter").value;
+    setTotalCost(parseInt(postsToDiamondCount) * diamondLevelMap[filterValue]);
     setDiamondLevel(filterValue);
   };
   const handleStopButton = () => {
     //reload the page
     window.location.reload();
-  }
+  };
   return (
     <>
       <div className='container my-5'>
@@ -186,9 +195,9 @@ export default function DiamondShower(props) {
                   name='coin filter'
                   id='diamondLevelFilter'
                   onChange={handleFilter}>
-                  <option value='💎'>{`💎`}</option>
-                  <option value='💎💎'>{`💎💎`}</option>
-                  <option value='💎💎💎'>{`💎💎💎`}</option>
+                  <option value='1'>{`💎`}</option>
+                  <option value='2'>{`💎💎`}</option>
+                  <option value='3'>{`💎💎💎`}</option>
                 </select>
               </div>
               <div className='my-2'>
@@ -212,12 +221,18 @@ export default function DiamondShower(props) {
                     `Shower Diamonds on ${postsToDiamondCount} Posts`
                   )}
                 </button>
-                
               </div>
+              <p>
+                Total Cost: {totalCost} $DESO (~$
+                {(props.desoPrice / 100) * totalCost})
+              </p>
               {isDimaonding ? (
-                  <button className='btn btn-danger btn-md my-1'
-                  onClick={handleStopButton}>Stop</button>
-                ) : null}
+                <button
+                  className='btn btn-danger btn-md my-1'
+                  onClick={handleStopButton}>
+                  Stop
+                </button>
+              ) : null}
             </div>
             <div className='continer d-flex justify-content-center my-1 mx-2'>
               <h3 className='compose-heading'>{`Latest Posts by ${usernameInput}`}</h3>
