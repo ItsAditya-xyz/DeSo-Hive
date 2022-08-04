@@ -20,7 +20,9 @@ export default function Anon(props) {
   const [postLoaded, setPostLoaded] = useState(false);
   const [ticking, setTicking] = useState(true);
   const [tickCount, setTickCount] = useState(0);
-  const [captchaUrl, setCaptchaUrl] = useState("https://mintedtweets.cordify.app/get-captcha-image")
+  const [captchaUrl, setCaptchaUrl] = useState(
+    "https://mintedtweets.cordify.app/get-captcha-image"
+  );
   const [wasPostSuccessful, setWasPostSuccessful] = useState(false);
 
   const [remark, setRemark] = useState("");
@@ -51,7 +53,11 @@ export default function Anon(props) {
     );
     console.log("ticking...");
 
-    setCaptchaUrl(captchaUrl === "https://mintedtweets.cordify.app/get-captcha-image2"? "https://mintedtweets.cordify.app/get-captcha-image": "https://mintedtweets.cordify.app/get-captcha-image2")
+    setCaptchaUrl(
+      captchaUrl === "https://mintedtweets.cordify.app/get-captcha-image2"
+        ? "https://mintedtweets.cordify.app/get-captcha-image"
+        : "https://mintedtweets.cordify.app/get-captcha-image2"
+    );
     return () => clearTimeout(timer);
   }, [tickCount, ticking]);
 
@@ -169,10 +175,10 @@ export default function Anon(props) {
       return;
     }
     const captchaTextInput = document.getElementById("captchaInput").value;
-    if(captchaTextInput === ""){
-      window.alert("Please input captcha Text")
-      setIsPosting(false)
-      return
+    if (captchaTextInput === "") {
+      window.alert("Please input captcha Text");
+      setIsPosting(false);
+      return;
     }
 
     const replacedText = bodyContent.replace(/\$/g, "💲");
@@ -182,7 +188,7 @@ export default function Anon(props) {
 
     const request = {
       content: replacedText,
-      captchaText: captchaTextInput
+      captchaText: captchaTextInput,
     };
     axios({
       method: "post",
@@ -193,7 +199,6 @@ export default function Anon(props) {
         const response = res.data;
         setRemark(response.message);
         if (response.status) {
-          
           setBodyContent("");
           setWasPostSuccessful(true);
           setPostHashHex(response.data.PostEntryResponse.PostHashHex);
@@ -234,7 +239,7 @@ export default function Anon(props) {
         </div>
       </nav>
 
-      <div className='continer d-flex justify-content-center m-5 mx-2'>
+      <div className=' d-flex justify-content-center m-5 mx-2'>
         <h1 className='text-center'>
           Post anything anonymously through{" "}
           <a href='https://diamondapp.com/u/AnonVoice' target={"_blank"}>
@@ -243,6 +248,16 @@ export default function Anon(props) {
             </span>
           </a>
         </h1>
+      </div>
+
+      <div className='container justify-content-center'>
+        <div
+          className='alert alert-primary'
+          handleCloseAlert={handleCloseModal}>
+          <strong>
+            {"In order to prevent spams, you can only make on post/hour"}
+          </strong>
+        </div>
       </div>
       <div className='d-flex justify-content-center'>
         <div className='container my-1 mx-2 py-4 px-4 compose-container'>
@@ -288,13 +303,11 @@ export default function Anon(props) {
               }}></textarea>
           </div>
           <div className='my-3'>
-           
             <img
               src={captchaUrl}
               alt='captcha'
               className='captcha-image'
-              style={{width: "250px"}}
-              
+              style={{ width: "250px" }}
             />
           </div>
           <div className='d-flex'>
@@ -317,9 +330,7 @@ export default function Anon(props) {
             </button>
           </div>
 
-          <div className="my-1">
-            {remark}
-          </div>
+          <div className='my-1'>{remark}</div>
         </div>
       </div>
 
