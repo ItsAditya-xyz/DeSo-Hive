@@ -255,7 +255,7 @@ export default function Anon(props) {
           className='alert alert-primary'
           handleCloseAlert={handleCloseModal}>
           <strong>
-            {"In order to prevent spams, you can only make on post/hour"}
+            {"In order to prevent spams, you can only make one post/hour"}
           </strong>
         </div>
       </div>
