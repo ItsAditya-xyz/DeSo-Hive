@@ -150,12 +150,7 @@ export default function Anon(props) {
       setIsPosting(false);
       return;
     }
-    const isEnglish = stringIsEnglish(bodyContent.trim());
-    if (!isEnglish) {
-      window.alert("Your post contains non-english characters");
-      setIsPosting(false);
-      return;
-    }
+  
 
     if (bodyContent.length == 0) {
       alert("Please enter some text to post");
@@ -255,7 +250,7 @@ export default function Anon(props) {
           className='alert alert-primary'
           handleCloseAlert={handleCloseModal}>
           <strong>
-            {"In order to prevent spams, you can only make one post/hour"}
+            {"In order to prevent spams, you can only make one post/15 minutes"}
           </strong>
         </div>
       </div>
