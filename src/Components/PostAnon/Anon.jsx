@@ -20,14 +20,12 @@ export default function Anon(props) {
   const [postLoaded, setPostLoaded] = useState(false);
   const [ticking, setTicking] = useState(true);
   const [tickCount, setTickCount] = useState(0);
-  const [captchaUrl, setCaptchaUrl] = useState(
-    "https://mintedtweets.cordify.app/get-captcha-image"
-  );
+
   const [wasPostSuccessful, setWasPostSuccessful] = useState(false);
 
   const [remark, setRemark] = useState("");
   //const [captcha, setCaptcha] = useState(null);
-  async function getCaptcha() {}
+
   const initLatestPost = async () => {
     await getCaptcha();
     try {
@@ -45,39 +43,6 @@ export default function Anon(props) {
       console.log(e);
     }
   };
-
-  useEffect(() => {
-    const timer = setTimeout(
-      () => ticking && setTickCount(tickCount + 1),
-      60 * 1e3
-    );
-    console.log("ticking...");
-
-    setCaptchaUrl(
-      captchaUrl === "https://mintedtweets.cordify.app/get-captcha-image2"
-        ? "https://mintedtweets.cordify.app/get-captcha-image"
-        : "https://mintedtweets.cordify.app/get-captcha-image2"
-    );
-    return () => clearTimeout(timer);
-  }, [tickCount, ticking]);
-
-  var ENGLISH = {};
-  "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 @!#$%^&*()_+-=[]{}|;':,./<>?`~"
-    .split("")
-    .forEach(function (ch) {
-      ENGLISH[ch] = true;
-    });
-
-  function stringIsEnglish(str) {
-    var index;
-
-    for (index = str.length - 1; index >= 0; --index) {
-      if (!ENGLISH[str.substring(index, index + 1)]) {
-        return false;
-      }
-    }
-    return true;
-  }
 
   const fetchMoreData = async () => {
     try {
@@ -150,7 +115,6 @@ export default function Anon(props) {
       setIsPosting(false);
       return;
     }
-  
 
     if (bodyContent.length == 0) {
       alert("Please enter some text to post");
@@ -169,21 +133,9 @@ export default function Anon(props) {
       setIsPosting(false);
       return;
     }
-    const captchaTextInput = document.getElementById("captchaInput").value;
-    if (captchaTextInput === "") {
-      window.alert("Please input captcha Text");
-      setIsPosting(false);
-      return;
-    }
-
-    const replacedText = bodyContent.replace(/\$/g, "💲");
-
-    console.log("posted");
-    console.log(replacedText);
 
     const request = {
-      content: replacedText,
-      captchaText: captchaTextInput,
+      content: bodyContent,
     };
     axios({
       method: "post",
@@ -297,24 +249,8 @@ export default function Anon(props) {
                 borderBottom: "1px solid rgb(218, 218, 218)",
               }}></textarea>
           </div>
-          <div className='my-3'>
-            <img
-              src={captchaUrl}
-              alt='captcha'
-              className='captcha-image'
-              style={{ width: "250px" }}
-            />
-          </div>
-          <div className='d-flex'>
-            <div className='px-3'>
-              <input
-                type='text'
-                id='captchaInput'
-                className='form-control'
-                placeholder='Captcha'
-              />
-            </div>
 
+          <div className='d-flex'>
             <button
               className={`btn btn-primary shadow-sm ${
                 isPosting ? "disabled" : " "
