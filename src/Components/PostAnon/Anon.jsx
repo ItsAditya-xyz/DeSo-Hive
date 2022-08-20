@@ -27,7 +27,7 @@ export default function Anon(props) {
   //const [captcha, setCaptcha] = useState(null);
 
   const initLatestPost = async () => {
-    await getCaptcha();
+   
     try {
       const latestMints = await da.getPostsForPublicKey(
         "AnonVoice",
