@@ -32,7 +32,7 @@ function Diamond2View(props) {
 
         setIsUploading(true);
         const request = {
-            "UserPublicKeyBase58Check": "BC1YLjSoz9dCko3wjCPouKaqDjYPMj4VwnzNpjCU5U3BdUnEPQBVaPq"
+            "UserPublicKeyBase58Check": loggedInPublicKey
         };
         const response = await deso.media.uploadImage(request);
         setUploadedImage(response.ImageURL);
