@@ -39,6 +39,7 @@ function View(props) {
     }
 
     const handleDiamond = async () => {
+        
         const request = {
             "ReceiverPublicKeyBase58Check": singlePostInfo.ProfileEntryResponse.PublicKeyBase58Check,
             "SenderPublicKeyBase58Check": loggedInPublicKey,
@@ -158,7 +159,7 @@ function View(props) {
                         </img>}
                         {loggedInPublicKey && <button
                             className='btn btn-primary btn-sm'
-                            onClick={() => { localStorage.removeItem("loggedInPublicKey"); setLoggedInPublicKey("") }}
+                            onClick={() => { localStorage.removeItem("loggedInPublicKey") ;setLoggedInPublicKey("") ;  }}
                         >Log Out</button>}
                     </div>
                 </div>
@@ -261,7 +262,7 @@ function View(props) {
                 </div>
             )}
 
-            {lackDiamonds && (
+            {(lackDiamonds && loggedInPublicKey) && (
                 <div className='container-fluid front-container '>
                     <h1 
                     style={{

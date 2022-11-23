@@ -78,7 +78,7 @@ function Diamond2View(props) {
             const postRequest = {
                 "UpdaterPublicKeyBase58Check": loggedInPublicKey,
                 "BodyObj": {
-                    "Body": `This Post is Diamond Gated by ${diamondString} diamonds using @DesoHive_`,
+                    "Body": `This Post is Gated by ${diamondString} diamonds using @DesoHive_`,
 
                     "VideoURLs": [],
                     "ImageURLs": []
@@ -103,7 +103,7 @@ function Diamond2View(props) {
             const EditpostRequest = {
                 "UpdaterPublicKeyBase58Check": loggedInPublicKey,
                 "BodyObj": {
-                    "Body": `This Post is Diamond Gated by ${diamondString} diamonds using @DesoHive_\n\nView at https://desohive.com/view/${createdPostHashHex}`,
+                    "Body": `This Post is Gated by ${diamondString} diamonds using @DesoHive_\n\nView at https://desohive.com/view/${createdPostHashHex}`,
 
                     "VideoURLs": [],
                     "ImageURLs": []
