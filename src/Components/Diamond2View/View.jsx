@@ -199,7 +199,7 @@ function View(props) {
                 </div>
             )}
 
-            {(decryptedContent && !lackDiamonds) && (
+            {(decryptedContent && !lackDiamonds && loggedInPublicKey) && (
                 <div
                     className='container-fluid front-container shadow p-3 mb-5 bg-white rounded'
 
