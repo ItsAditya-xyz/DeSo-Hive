@@ -277,6 +277,7 @@ function View(props) {
                             onClick={handleDiamond}
                         >{`Give ${diamondLevelGated} diamonds`}</button>
                     </div>
+                    <p className="my-3">Diamonding might not work. Please give diamond to the post on DiamondApp till we fix this</p>
                 </div>
             )}
 
