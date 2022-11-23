@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 import Deso from "deso-protocol";
 import DaoOrderbook from "./Components/DaoOrderbook/DaoOrderbook";
 import Anon from "./Components/PostAnon/Anon";
+import Diamond2View from "./Components/Diamond2View/Diamond2View";
+import View from "./Components/Diamond2View/View";
 
 const IdentityUsersKey = "deso_user_key";
 const deso = new Deso();
@@ -127,6 +129,22 @@ function App() {
             element={
               <>
                 <Anon />
+              </>
+            }
+          />
+          <Route
+            path='/diamondToView'
+            element={
+              <>
+                <Diamond2View />
+              </>
+            }
+          />
+          <Route
+            path='/view/:postHashHex'
+            element={
+              <>
+                <View />
               </>
             }
           />
