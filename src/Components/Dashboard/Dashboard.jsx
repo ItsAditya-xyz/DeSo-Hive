@@ -180,6 +180,12 @@ export default function Dashboard(props) {
                   </div>
                   &#160;Anonymous Post
                 </a>
+                <a className='nav-link btn' href='/diamondToView'>
+                  <div className='sb-nav-link-key'>
+                    <i className='fas fa-lock'></i>
+                  </div>
+                  &#160;Gated Content
+                </a>
               </div>
             </div>
           </nav>
