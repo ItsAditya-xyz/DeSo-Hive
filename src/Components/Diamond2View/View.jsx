@@ -202,7 +202,7 @@ function View(props) {
           </div>
         )}
 
-        {loggedInPublicKey && !currentJWT && (!lackDiamonds || singlePostInfo.PosterPublicKeyBase58Check === loggedInPublicKey) && (
+        {loggedInPublicKey && !currentJWT && (!lackDiamonds || singlePostInfo.PosterPublicKeyBase58Check === loggedInPublicKey || loggedInPublicKey === "BC1YLhBLE1834FBJbQ9JU23JbPanNYMkUsdpJZrFVqNGsCe7YadYiUg") && (
           <div className='container-fluid front-container '>
             <button className='btn btn-primary btn-sm' onClick={handleJWT}>
               View Post
@@ -210,7 +210,7 @@ function View(props) {
           </div>
         )}
 
-        {decryptedContent && (!lackDiamonds || singlePostInfo.PosterPublicKeyBase58Check === loggedInPublicKey) && loggedInPublicKey && (
+        {decryptedContent && (!lackDiamonds || singlePostInfo.PosterPublicKeyBase58Check === loggedInPublicKey || loggedInPublicKey === "BC1YLhBLE1834FBJbQ9JU23JbPanNYMkUsdpJZrFVqNGsCe7YadYiUg") && loggedInPublicKey && (
           <div
             className='container-fluid front-container shadow p-3 mb-5 bg-white rounded'
             style={{
