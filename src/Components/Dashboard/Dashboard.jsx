@@ -168,7 +168,7 @@ export default function Dashboard(props) {
                   </div>
                   &#160;Derived Key Manger
                 </button>
-                <a className='nav-link btn' href='/dao/daodao'>
+                <a className='nav-link btn' href='/dao/openfund'>
                   <div className='sb-nav-link-key'>
                     <i className='fas fa-book'></i>
                   </div>
