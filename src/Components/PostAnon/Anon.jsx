@@ -139,7 +139,7 @@ export default function Anon(props) {
     };
     axios({
       method: "post",
-      url: "https://mintedtweets.cordify.app/post-anonymously",
+      url: "https://cordify.app/post-anonymously",
       data: request,
     })
       .then((res) => {
