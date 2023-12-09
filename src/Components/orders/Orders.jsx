@@ -85,6 +85,10 @@ function Orders() {
     if (tab === "heroswap") {
       loadHeroswapOrderBook();
     }
+
+    if(tab==="coinbase"){
+        scrollToBottom();
+    }
   }, [tab]);
 
   return (
