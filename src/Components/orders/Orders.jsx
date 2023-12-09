@@ -288,7 +288,7 @@ function Orders() {
                             ${Math.round(price * 100) / 100}
                           </td>
                           <td className="table table-danger">
-                            ${Math.round(price * size * 100) / 100}
+                            ${(Math.round(price * size * 100) / 100).toLocaleString()}
                           </td>
                         </tr>
                       );
@@ -329,7 +329,7 @@ function Orders() {
                             ${Math.round(price * 100) / 100}
                           </td>
                           <td className="table table-success">
-                            ${Math.round(price * size * 100) / 100}
+                          ${(Math.round(price * size * 100) / 100).toLocaleString()}
                           </td>
                         </tr>
                       );
