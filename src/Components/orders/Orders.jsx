@@ -56,10 +56,10 @@ function Orders() {
       asks.push([DESO_STAGES[i], price, 1]);
     }
 
-    const reversedAsk = [...asks].reverse();
+    const reversedAsk = [...bids].reverse();
     heroSwapOrders = {
       asks: reversedAsk,
-      bids: bids,
+      bids: asks,
     };
     setHeroswapOrderbook(heroSwapOrders);
     setLoadingHeroswap(false);
