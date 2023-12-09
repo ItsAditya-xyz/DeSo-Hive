@@ -10,6 +10,7 @@ import DaoOrderbook from "./Components/DaoOrderbook/DaoOrderbook";
 import Anon from "./Components/PostAnon/Anon";
 import Diamond2View from "./Components/Diamond2View/Diamond2View";
 import View from "./Components/Diamond2View/View";
+import Orders from "./Components/orders/Orders";
 
 const IdentityUsersKey = "deso_user_key";
 const deso = new Deso();
@@ -72,18 +73,20 @@ function App() {
       <Router>
         <Routes>
           <Route
-            path='/DAO/:DaoName'
+            path="/DAO/:DaoName"
             element={
               <>
                 {isLoading ? (
                   <div
-                    className='d-flex justify-content-center'
-                    style={{ marginTop: "49vh" }}>
+                    className="d-flex justify-content-center"
+                    style={{ marginTop: "49vh" }}
+                  >
                     <div
-                      className='spinner-border text-primary'
+                      className="spinner-border text-primary"
                       style={{ width: "4rem", height: "4rem" }}
-                      role='status'>
-                      <span className='sr-only'>Loading...</span>
+                      role="status"
+                    >
+                      <span className="sr-only">Loading...</span>
                     </div>
                   </div>
                 ) : (
@@ -96,18 +99,43 @@ function App() {
             }
           />
           <Route
-            path='/'
+            path="/orders"
             element={
               <>
                 {isLoading ? (
                   <div
-                    className='d-flex justify-content-center'
-                    style={{ marginTop: "49vh" }}>
+                    className="d-flex justify-content-center"
+                    style={{ marginTop: "49vh" }}
+                  >
                     <div
-                      className='spinner-border text-primary'
+                      className="spinner-border text-primary"
                       style={{ width: "4rem", height: "4rem" }}
-                      role='status'>
-                      <span className='sr-only'>Loading...</span>
+                      role="status"
+                    >
+                      <span className="sr-only">Loading...</span>
+                    </div>
+                  </div>
+                ) : (
+                  <Orders loginWithDeso={loginWithDeso} desoPrice={desoPrice} />
+                )}
+              </>
+            }
+          />
+          <Route
+            path="/"
+            element={
+              <>
+                {isLoading ? (
+                  <div
+                    className="d-flex justify-content-center"
+                    style={{ marginTop: "49vh" }}
+                  >
+                    <div
+                      className="spinner-border text-primary"
+                      style={{ width: "4rem", height: "4rem" }}
+                      role="status"
+                    >
+                      <span className="sr-only">Loading...</span>
                     </div>
                   </div>
                 ) : loggedIn ? (
@@ -125,7 +153,7 @@ function App() {
           />
 
           <Route
-            path='/Anon'
+            path="/Anon"
             element={
               <>
                 <Anon />
@@ -133,7 +161,7 @@ function App() {
             }
           />
           <Route
-            path='/diamondToView'
+            path="/diamondToView"
             element={
               <>
                 <Diamond2View />
@@ -141,7 +169,7 @@ function App() {
             }
           />
           <Route
-            path='/view/:postHashHex'
+            path="/view/:postHashHex"
             element={
               <>
                 <View />
