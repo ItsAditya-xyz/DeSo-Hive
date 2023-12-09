@@ -97,6 +97,7 @@ function Orders() {
                    
                       <th>Size</th>
                       <th>Price</th>
+                      <th>Value</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -111,6 +112,9 @@ function Orders() {
                           <td>{Math.round(size * 10) / 10}</td>
                           <td className="table table-danger">
                             ${Math.round(price * 100) / 100}
+                          </td>
+                          <td className="table table-danger">
+                            ${Math.round(price * size * 100) / 100}
                           </td>
                         </tr>
                         
@@ -138,6 +142,7 @@ function Orders() {
                    
                       <th>Size</th>
                       <th>Price</th>
+                        <th>Value</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -152,6 +157,9 @@ function Orders() {
                           <td>{Math.round(size * 10) / 10}</td>
                           <td className="table table-success">
                             ${Math.round(price * 100) / 100}
+                          </td>
+                          <td className="table table-danger">
+                            ${Math.round(price * size * 100) / 100}
                           </td>
                         </tr>
                         
