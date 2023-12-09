@@ -158,7 +158,7 @@ function Orders() {
                           <td className="table table-success">
                             ${Math.round(price * 100) / 100}
                           </td>
-                          <td className="table table-danger">
+                          <td className="table table-success">
                             ${Math.round(price * size * 100) / 100}
                           </td>
                         </tr>
