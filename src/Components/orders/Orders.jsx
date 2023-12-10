@@ -38,18 +38,18 @@ function Orders() {
 
     for (let i = 0; i < USD_STAGES.length; i++) {
       const response = await fetch(
-        `https://heroswap.com/api/v1/destination-amount-for-deposit-amount/DUSD/DESO/${USD_STAGES[i]}`
+        `https://heroswap.com/api/v1/destination-amount-for-deposit-amount/USDC/DESO/${USD_STAGES[i]}`
       );
       const data = await response.json();
       const price =
         Math.round((USD_STAGES[i] / parseFloat(data.DestinationAmount)) * 100) /
         100;
-        bids.push([DESO_STAGES[i], price, 1]);
+        bids.push([Math.round(parseFloat(data.DestinationAmount)*100)/100, price, 1]);
     }
 
     for (let i = 0; i < USD_STAGES.length; i++) {
       const response = await fetch(
-        `https://heroswap.com/api/v1/destination-amount-for-deposit-amount/DESO/DUSD/${DESO_STAGES[i]}`
+        `https://heroswap.com/api/v1/destination-amount-for-deposit-amount/DESO/USDC/${DESO_STAGES[i]}`
       );
       const data = await response.json();
       const price = Math.round(( parseFloat(data.DestinationAmount/DESO_STAGES[i] )) * 100)/100;
