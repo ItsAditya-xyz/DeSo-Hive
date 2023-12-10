@@ -10,7 +10,7 @@ function Orders() {
   const [heroswapOrderbook, setHeroswapOrderbook] = useState([]);
 
   const [loadingGate, setLoadingGate] = useState(true);
-  const [gateOrderbook, setGateOrderbook] = useState([]);
+  const [gateOrderbook, setGateOrderbook] = useState(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
@@ -75,6 +75,7 @@ function Orders() {
 
   const loadGateOrderBook = async () => {
     if (tab !== "gate") return;
+  if (gateOrderbook != null) return
     const url = "https://api.gate.io/api2/1/orderBook/deso_usdt";
     const proxyServer = "https://cordify.xyz/proxy-server";
     const payload = {
