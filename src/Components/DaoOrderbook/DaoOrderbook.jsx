@@ -14,7 +14,7 @@ export default function DaoOrderbook(props) {
   const params = useParams();
   const daoName = params.DaoName;
 
-  const precision = 100000;
+  const [precision, setPrecision] = useState(100000);
   var daoPublicKey = "";
   var daoOrderResponse = null;
   const scrollToBottom = () => {
@@ -30,6 +30,10 @@ export default function DaoOrderbook(props) {
 
     const publicKeyOfDAO = getSingleProfile.Profile.PublicKeyBase58Check;
     daoPublicKey = publicKeyOfDAO;
+    if(daoPublicKey==="BC1YLjVW2R9e44vjXKLST86ie6jfkyiShqPC47jUEFeBnERxG7NeUqC"){
+      //lmeow coin
+      setPrecision(1000000000);
+    }
     const payload = {
       DAOCoin1CreatorPublicKeyBase58Check: publicKeyOfDAO,
       DAOCoin2CreatorPublicKeyBase58Check: "DESO",
@@ -226,6 +230,7 @@ export default function DaoOrderbook(props) {
                         <th>Creator</th>
                         <th>Amount</th>
                         <th>Price</th>
+                        <th>Value</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -268,6 +273,17 @@ export default function DaoOrderbook(props) {
                                   ) / precision
                                 })`}
                               </td>
+
+                              <td>
+                                ${Math.round((order.QuantityToFill * ( Math.round(
+                                    (1 /
+                                      order.ExchangeRateCoinsToSellPerCoinToBuy) *
+                                      (props.desoPrice / 100) *
+                                      precision
+                                  ) / precision))*10)/10}
+                              </td>
+
+
                             </tr>
                           );
                         }
@@ -290,6 +306,7 @@ export default function DaoOrderbook(props) {
                         <th>Creator</th>
                         <th>Amount</th>
                         <th>Price</th>
+                        <th>Value</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -329,6 +346,16 @@ export default function DaoOrderbook(props) {
                                   ) / precision
                                 })`}
                               </td>
+
+                              <td>
+                                ${Math.round((order.QuantityToFill * (   Math.round(
+                                    order.ExchangeRateCoinsToSellPerCoinToBuy *
+                                      (props.desoPrice / 100) *
+                                      precision
+                                  ) / precision))*10)/10}
+                              </td>
+
+
                             </tr>
                           );
                         }
