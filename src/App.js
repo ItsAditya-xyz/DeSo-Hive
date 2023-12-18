@@ -19,7 +19,7 @@ function App() {
 
   const [desoApi, setDesoApi] = useState(null);
   const [publicKey, setPublicKey] = useState(null);
-  const [desoPrice, setDeSoPrice] = useState(50);
+  const [desoPrice, setDeSoPrice] = useState(25);
   const [appState, setAppState] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
