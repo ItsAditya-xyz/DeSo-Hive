@@ -275,12 +275,10 @@ export default function DaoOrderbook(props) {
                               </td>
 
                               <td>
-                                ${Math.round((order.QuantityToFill * ( Math.round(
-                                    (1 /
-                                      order.ExchangeRateCoinsToSellPerCoinToBuy) *
-                                      (props.desoPrice / 100) *
-                                      precision
-                                  ) / precision))*10)/10}
+                                ${Math.round(
+  (order.QuantityToFill * ((1 / order.ExchangeRateCoinsToSellPerCoinToBuy) * (props.desoPrice / 100)))
+  * 10
+) / 10}
                               </td>
 
 
