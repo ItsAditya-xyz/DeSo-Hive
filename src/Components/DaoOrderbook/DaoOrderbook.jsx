@@ -30,7 +30,9 @@ export default function DaoOrderbook(props) {
 
     const publicKeyOfDAO = getSingleProfile.Profile.PublicKeyBase58Check;
     daoPublicKey = publicKeyOfDAO;
-    if(daoPublicKey==="BC1YLjVW2R9e44vjXKLST86ie6jfkyiShqPC47jUEFeBnERxG7NeUqC"){
+    if (
+      daoPublicKey === "BC1YLjVW2R9e44vjXKLST86ie6jfkyiShqPC47jUEFeBnERxG7NeUqC"
+    ) {
       //lmeow coin
       setPrecision(1000000000);
     }
@@ -193,8 +195,6 @@ export default function DaoOrderbook(props) {
               DeSo Hive
             </a>
           </div>
-
-         
         </div>
       </nav>
 
@@ -275,13 +275,15 @@ export default function DaoOrderbook(props) {
                               </td>
 
                               <td>
-                                ${Math.round(
-  (order.QuantityToFill * ((1 / order.ExchangeRateCoinsToSellPerCoinToBuy) * (props.desoPrice / 100)))
-  * 10
-) / 10}
+                                $
+                                {Math.round(
+                                  order.QuantityToFill *
+                                    ((1 /
+                                      order.ExchangeRateCoinsToSellPerCoinToBuy) *
+                                      (props.desoPrice / 100)) *
+                                    10
+                                ) / 10}
                               </td>
-
-
                             </tr>
                           );
                         }
@@ -346,14 +348,18 @@ export default function DaoOrderbook(props) {
                               </td>
 
                               <td>
-                                ${Math.round((order.QuantityToFill * (   Math.round(
-                                    order.ExchangeRateCoinsToSellPerCoinToBuy *
-                                      (props.desoPrice / 100) *
-                                      precision
-                                  ) / precision))*10)/10}
+                                $
+                                {Math.round(
+                                  order.QuantityToFill *
+                                    (Math.round(
+                                      order.ExchangeRateCoinsToSellPerCoinToBuy *
+                                        (props.desoPrice / 100) *
+                                        precision
+                                    ) /
+                                      precision) *
+                                    10
+                                ) / 10}
                               </td>
-
-
                             </tr>
                           );
                         }

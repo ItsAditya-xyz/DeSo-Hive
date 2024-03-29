@@ -11,6 +11,7 @@ import Anon from "./Components/PostAnon/Anon";
 import Diamond2View from "./Components/Diamond2View/Diamond2View";
 import View from "./Components/Diamond2View/View";
 import Orders from "./Components/orders/Orders";
+import RichList from "./Components/RichList/RichList";
 
 const IdentityUsersKey = "deso_user_key";
 const deso = new Deso();
@@ -173,6 +174,16 @@ function App() {
             element={
               <>
                 <View />
+              </>
+            }
+          />
+           <Route
+            path="/rich-list"
+            element={
+              <>
+               <RichList
+               desoPrice={desoPrice}
+               />
               </>
             }
           />
