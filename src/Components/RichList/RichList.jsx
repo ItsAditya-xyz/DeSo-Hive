@@ -164,7 +164,7 @@ export default function RichList(desoPrice) {
                             {userInfo[item.PublicKeyBase58Check].length > 40
                               ? userInfo[item.PublicKeyBase58Check].slice(
                                   0,
-                                  8
+                                  14
                                 ) +
                                 "..." +
                                 userInfo[item.PublicKeyBase58Check].slice(-9)
